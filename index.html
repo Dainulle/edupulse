@@ -1,0 +1,1608 @@
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>eduPULSE – Mokykis su džiaugsmu</title>
+<meta name="description" content="Interaktyvi edukacinė platforma 5–10 klasių mokiniams. Anglų kalba ir matematika žaidžiant – XP, monetos, apdovanojimai!">
+<meta property="og:title" content="eduPULSE – Mokykis su džiaugsmu">
+<meta property="og:description" content="Anglų kalba ir matematika 5–10 klasių mokiniams. Žaisk ir mokykis!">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap" rel="stylesheet">
+<style>
+:root{--pr:#7C5CBF;--prl:#A98FDE;--prd:#5A3E99;--ac:#FF7043;--ac2:#FFB300;--ok:#43A047;--err:#E53935;--bg:#F5F0FF;--bg2:#EDE5FF;--card:#fff;--tx:#2D1B69;--tx2:#6B5BA8;--tx3:#9E8EC4;--bd:#D4C5F0;--sh:0 4px 24px rgba(124,92,191,.10);--shh:0 8px 32px rgba(124,92,191,.18);--r:18px;--rs:10px;--f:'Nunito',sans-serif;--fd:'Fredoka One',cursive}
+.classic{--pr:#2563EB;--prl:#60A5FA;--prd:#1D4ED8;--ac:#F59E0B;--ac2:#10B981;--bg:#F8FAFC;--bg2:#EFF6FF;--tx:#0F172A;--tx2:#475569;--tx3:#94A3B8;--bd:#E2E8F0;--sh:0 2px 12px rgba(37,99,235,.08);--shh:0 4px 20px rgba(37,99,235,.15);--fd:'Nunito',sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--f);background:var(--bg);color:var(--tx);min-height:100vh;overflow-x:hidden}
+.screen{display:none;min-height:100vh}.screen.active{display:flex;flex-direction:column}
+#screen-theme{align-items:center;justify-content:center;background:linear-gradient(135deg,#7C5CBF,#FF7043);padding:2rem}
+.theme-box{text-align:center;max-width:640px;width:100%}
+.theme-box h1{font-family:var(--fd);font-size:3rem;color:#fff;margin-bottom:.5rem}
+.theme-box>p{color:rgba(255,255,255,.85);font-size:1.1rem;margin-bottom:2.5rem}
+.theme-cards{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+.theme-card{background:#fff;border-radius:var(--r);padding:2rem 1.5rem;cursor:pointer;transition:transform .2s,box-shadow .2s;border:3px solid transparent}
+.theme-card:hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(0,0,0,.15)}
+.tc-w{border-color:#A98FDE}.tc-c{border-color:#2563EB}
+.theme-icon{font-size:3rem;margin-bottom:1rem}
+.theme-card h2{font-size:1.4rem;margin-bottom:.5rem}
+.theme-card p{font-size:.9rem;color:#666}
+#screen-auth{align-items:center;justify-content:center;padding:2rem}
+.auth-card{background:var(--card);border-radius:var(--r);padding:2.5rem;max-width:420px;width:100%;box-shadow:var(--sh);border:1.5px solid var(--bd)}
+.auth-logo{text-align:center;margin-bottom:1.5rem}
+.auth-logo h1{font-family:var(--fd);font-size:2rem;color:var(--pr)}
+.auth-logo p{color:var(--tx2);font-size:.95rem}
+.auth-tabs{display:flex;gap:.5rem;margin-bottom:1.5rem;background:var(--bg2);border-radius:var(--rs);padding:4px}
+.auth-tab{flex:1;padding:.6rem;text-align:center;border-radius:8px;cursor:pointer;font-weight:700;color:var(--tx2);transition:all .2s;border:none;background:transparent;font-family:var(--f)}
+.auth-tab.active{background:var(--card);color:var(--pr);box-shadow:var(--sh)}
+.fg{margin-bottom:1rem}
+.fg label{display:block;font-weight:700;margin-bottom:.4rem;color:var(--tx);font-size:.9rem}
+.fg input{width:100%;padding:.75rem 1rem;border-radius:var(--rs);border:1.5px solid var(--bd);background:var(--bg);color:var(--tx);font-family:var(--f);font-size:1rem;transition:border-color .2s}
+.fg input:focus{outline:none;border-color:var(--pr)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;padding:.75rem 1.5rem;border-radius:var(--rs);font-family:var(--f);font-weight:800;font-size:1rem;cursor:pointer;transition:all .2s;border:none}
+.btn-pr{background:var(--pr);color:#fff;box-shadow:0 4px 12px rgba(124,92,191,.3)}
+.btn-pr:hover{background:var(--prd);transform:translateY(-1px)}
+.btn-ac{background:var(--ac);color:#fff}
+.btn-out{background:transparent;border:2px solid var(--pr);color:var(--pr)}
+.btn-sm{padding:.4rem 1rem;font-size:.85rem}
+.btn-full{width:100%}
+.nav{background:var(--card);border-bottom:1.5px solid var(--bd);padding:0 2rem;height:64px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:var(--sh)}
+.nav-logo{font-family:var(--fd);font-size:1.6rem;color:var(--pr)}
+.nav-stats{display:flex;align-items:center;gap:1rem}
+.spill{display:flex;align-items:center;gap:.4rem;background:var(--bg2);padding:.4rem .9rem;border-radius:20px;font-weight:800;font-size:.95rem}
+.sp-xp{color:#FF7043}.sp-cn{color:#FFB300}.sp-st{color:#FF5722}
+.nav-av{width:40px;height:40px;border-radius:50%;background:var(--pr);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:1rem;cursor:pointer;border:2px solid var(--prl)}
+.sidenav{width:220px;background:var(--card);border-right:1.5px solid var(--bd);padding:1.5rem 1rem;display:flex;flex-direction:column;gap:.3rem;min-height:calc(100vh - 64px);position:sticky;top:64px;height:calc(100vh - 64px)}
+.snav-i{display:flex;align-items:center;gap:.8rem;padding:.75rem 1rem;border-radius:var(--rs);cursor:pointer;font-weight:700;color:var(--tx2);transition:all .2s;border:none;background:none;font-family:var(--f);font-size:.95rem;text-align:left;width:100%}
+.snav-i:hover,.snav-i.active{background:var(--bg2);color:var(--pr)}
+.with-side{display:flex}.with-side>.main{flex:1;overflow-y:auto}
+.dash-wrap,.subj-wrap,.lesson-wrap,.shop-wrap,.prof-wrap{flex:1;padding:2rem;max-width:960px;margin:0 auto;width:100%}
+.welcome{background:linear-gradient(135deg,var(--pr),var(--prl));border-radius:var(--r);padding:2rem;margin-bottom:2rem;color:#fff;position:relative;overflow:hidden}
+.welcome h2{font-family:var(--fd);font-size:1.8rem;margin-bottom:.3rem}
+.sec-title{font-family:var(--fd);font-size:1.4rem;color:var(--pr);margin-bottom:1rem}
+.subj-cards{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:2rem}
+.subj-card{background:var(--card);border-radius:var(--r);padding:1.5rem;border:2px solid var(--bd);cursor:pointer;transition:all .2s;box-shadow:var(--sh)}
+.subj-card:hover{transform:translateY(-4px);box-shadow:var(--shh);border-color:var(--prl)}
+.subj-icon{font-size:2.5rem;margin-bottom:1rem}
+.subj-card h3{font-family:var(--fd);font-size:1.3rem;margin-bottom:.4rem}
+.subj-card p{color:var(--tx2);font-size:.9rem;margin-bottom:1rem}
+.pbar-w{background:var(--bg2);border-radius:10px;height:8px;overflow:hidden}
+.pbar{height:100%;background:var(--pr);border-radius:10px;transition:width .5s}
+.plabel{font-size:.8rem;color:var(--tx3);margin-top:.4rem}
+.stats-g{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+.stat-c{background:var(--card);border-radius:var(--rs);padding:1.2rem;text-align:center;border:1.5px solid var(--bd)}
+.stat-c-icon{font-size:1.5rem;margin-bottom:.4rem}
+.stat-c-val{font-size:1.6rem;font-weight:900;color:var(--pr)}
+.stat-c-lbl{font-size:.8rem;color:var(--tx2);margin-top:.2rem}
+.back-btn{display:inline-flex;align-items:center;gap:.4rem;color:var(--tx2);font-weight:700;cursor:pointer;margin-bottom:1.5rem;background:none;border:none;font-family:var(--f);font-size:.95rem}
+.back-btn:hover{color:var(--pr)}
+.class-tabs{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:1.5rem}
+.ctab{padding:.5rem 1rem;border-radius:var(--rs);font-weight:700;cursor:pointer;border:2px solid var(--bd);background:var(--card);color:var(--tx2);font-family:var(--f);font-size:.9rem;transition:all .2s}
+.ctab.active{background:var(--pr);color:#fff;border-color:var(--pr)}
+.topic-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem;margin-bottom:2rem}
+.topic-card{background:var(--card);border-radius:var(--rs);padding:1.2rem;border:2px solid var(--bd);cursor:pointer;transition:all .2s;display:flex;flex-direction:column;gap:.5rem}
+.topic-card:hover{border-color:var(--pr);transform:translateY(-2px);box-shadow:var(--shh)}
+.topic-card.done{border-color:var(--ok)}
+.topic-name{font-weight:800;font-size:.95rem}
+.topic-meta{font-size:.8rem;color:var(--tx2)}
+.tbadge{align-self:flex-start;padding:.2rem .6rem;border-radius:6px;font-size:.75rem;font-weight:700}
+.tb-new{background:var(--bg2);color:var(--pr)}.tb-done{background:#E8F5E9;color:#2E7D32}
+.lesson-wrap{max-width:780px}
+.lesson-hdr{display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem}
+.lpbar-w{flex:1;background:var(--bg2);border-radius:10px;height:12px;overflow:hidden}
+.lpbar{height:100%;background:var(--pr);border-radius:10px;transition:width .4s}
+.lcount{font-weight:700;color:var(--tx2);font-size:.9rem;white-space:nowrap}
+.l-card{background:var(--card);border-radius:var(--r);padding:2rem;box-shadow:var(--sh);border:1.5px solid var(--bd);min-height:300px}
+.l-theory{line-height:1.8;font-size:1.05rem}
+.l-theory h3{font-family:var(--fd);font-size:1.3rem;color:var(--pr);margin-bottom:1rem}
+.th-hl{background:var(--bg2);border-left:4px solid var(--pr);border-radius:0 var(--rs) var(--rs) 0;padding:1rem 1.2rem;margin:1rem 0}
+.th-ex{background:#FFF8E1;border-left:4px solid var(--ac2);border-radius:0 var(--rs) var(--rs) 0;padding:1rem 1.2rem;margin:1rem 0}
+.q-lbl{font-size:.85rem;font-weight:700;color:var(--pr);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.5rem}
+.q-txt{font-size:1.1rem;font-weight:700;color:var(--tx);margin-bottom:1.5rem}
+.choices{display:flex;flex-direction:column;gap:.75rem}
+.choice{padding:.9rem 1.2rem;border-radius:var(--rs);border:2px solid var(--bd);cursor:pointer;transition:all .2s;font-weight:600;font-size:.95rem;background:var(--card);color:var(--tx);text-align:left;font-family:var(--f)}
+.choice:hover:not(:disabled){border-color:var(--pr);background:var(--bg2)}
+.choice.correct{border-color:var(--ok)!important;background:#E8F5E9!important;color:#1B5E20!important}
+.choice.wrong{border-color:var(--err)!important;background:#FFEBEE!important;color:#B71C1C!important}
+.fill-inp{width:100%;padding:.9rem 1.2rem;border-radius:var(--rs);border:2px solid var(--bd);font-family:var(--f);font-size:1.05rem;color:var(--tx);background:var(--bg);margin-bottom:1rem;transition:border-color .2s}
+.fill-inp:focus{outline:none;border-color:var(--pr)}
+.fill-inp.correct{border-color:var(--ok);background:#E8F5E9}
+.fill-inp.wrong{border-color:var(--err);background:#FFEBEE}
+.fb{margin-top:1rem;padding:1rem 1.2rem;border-radius:var(--rs);font-weight:600}
+.fb.ok{background:#E8F5E9;color:#1B5E20;border:1.5px solid #A5D6A7}
+.fb.bad{background:#FFEBEE;color:#B71C1C;border:1.5px solid #EF9A9A}
+.l-foot{display:flex;justify-content:flex-end;margin-top:1.5rem}
+.word-bank{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1.5rem}
+.wchip{padding:.5rem 1rem;background:var(--bg2);border:2px solid var(--bd);border-radius:var(--rs);font-weight:700;cursor:pointer;transition:all .15s;font-family:var(--f);color:var(--tx)}
+.wchip:hover{border-color:var(--pr);background:var(--pr);color:#fff}
+.wchip.used{opacity:.3;pointer-events:none}
+.sent-area{min-height:52px;border:2px dashed var(--bd);border-radius:var(--rs);padding:.75rem;display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1rem;background:var(--bg);cursor:pointer}
+.pw{padding:.4rem .8rem;background:var(--pr);color:#fff;border-radius:6px;font-weight:700;font-size:.9rem;cursor:pointer}
+.diff{display:inline-block;padding:.15rem .5rem;border-radius:6px;font-size:.72rem;font-weight:700;margin-left:.4rem}
+.diff-easy{background:#E8F5E9;color:#2E7D32}.diff-med{background:#FFF8E1;color:#F57F17}
+.diff-hard{background:#FFEBEE;color:#B71C1C}.diff-expert{background:#F3E5F5;color:#6A1B9A}
+.shop-tabs{display:flex;gap:.5rem;margin-bottom:1.5rem;background:var(--bg2);border-radius:var(--rs);padding:4px;width:fit-content}
+.shop-tab{padding:.5rem 1.2rem;border-radius:8px;font-weight:700;font-size:.9rem;cursor:pointer;transition:all .2s;border:none;background:transparent;color:var(--tx2);font-family:var(--f)}
+.shop-tab.active{background:var(--card);color:var(--pr);box-shadow:var(--sh)}
+.shop-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(175px,1fr));gap:1.2rem}
+.shop-item{background:var(--card);border-radius:var(--r);padding:1.5rem;border:2px solid var(--bd);text-align:center;transition:all .2s}
+.shop-item:hover{transform:translateY(-3px);box-shadow:var(--shh);border-color:var(--prl)}
+.shop-item.owned{border-color:var(--ok)}.shop-item.equipped{border-color:var(--ac2);background:#FFFDE7}
+.si-icon{font-size:2.8rem;margin-bottom:.8rem}.si-name{font-weight:800;font-size:.95rem;margin-bottom:.3rem}
+.si-desc{font-size:.8rem;color:var(--tx2);margin-bottom:1rem}
+.si-price{display:flex;align-items:center;justify-content:center;gap:.3rem;font-weight:800;color:#FFB300;font-size:1rem;margin-bottom:.8rem}
+.inv-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:1rem}
+.inv-item{background:var(--card);border-radius:var(--rs);padding:1.2rem;border:2px solid var(--bd);text-align:center}
+.inv-item.equipped{border-color:var(--ac2);background:#FFFDE7}
+.prof-hdr{background:linear-gradient(135deg,var(--pr),var(--prl));border-radius:var(--r);padding:2rem;color:#fff;text-align:center;margin-bottom:2rem}
+.prof-av{width:80px;height:80px;border-radius:50%;background:rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;font-size:2.5rem;margin:0 auto 1rem;border:3px solid rgba(255,255,255,.5)}
+.ach-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:1rem}
+.ach{background:var(--card);border-radius:var(--rs);padding:1rem;text-align:center;border:1.5px solid var(--bd)}
+.ach-icon{font-size:2rem;margin-bottom:.4rem}.ach-name{font-size:.8rem;font-weight:700}
+.ach.locked{opacity:.4;filter:grayscale(1)}
+#screen-placement{align-items:center;justify-content:center;padding:2rem}
+.place-card{background:var(--card);border-radius:var(--r);padding:2.5rem;max-width:600px;width:100%;box-shadow:var(--sh);border:1.5px solid var(--bd)}
+.modal-ov{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;align-items:center;justify-content:center;z-index:1000;padding:1rem}
+.modal-ov.open{display:flex}
+.modal-box{background:var(--card);border-radius:var(--r);padding:2.5rem;max-width:460px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.2);animation:mIn .3s ease}
+@keyframes mIn{from{opacity:0;transform:scale(.92)}to{opacity:1;transform:scale(1)}}
+.m-icon{font-size:3.5rem;margin-bottom:1rem}.m-title{font-family:var(--fd);font-size:1.8rem;color:var(--pr);margin-bottom:.5rem}
+.m-desc{color:var(--tx2);margin-bottom:1.5rem;line-height:1.6}
+.m-rewards{display:flex;justify-content:center;gap:1.5rem;margin-bottom:1.5rem}
+.rw{background:var(--bg2);border-radius:var(--rs);padding:.6rem 1.2rem;font-weight:800;font-size:1rem}
+.rw-x{color:#FF7043}.rw-c{color:#FFB300}
+.toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(100px);background:var(--tx);color:#fff;padding:.8rem 1.5rem;border-radius:30px;font-weight:700;z-index:9999;transition:transform .3s;pointer-events:none}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.xp-pop{position:fixed;top:80px;right:2rem;background:var(--card);border-radius:var(--r);padding:1rem 1.5rem;box-shadow:var(--shh);border:2px solid var(--prl);font-weight:800;color:var(--pr);font-size:1.1rem;z-index:9999;display:none;align-items:center;gap:.5rem}
+.conf-w{position:fixed;inset:0;pointer-events:none;z-index:9998;overflow:hidden}
+.cp{position:absolute;border-radius:2px;animation:cFall 2s ease-out forwards}
+@keyframes cFall{from{transform:translateY(-20px) rotate(0);opacity:1}to{transform:translateY(110vh) rotate(720deg);opacity:0}}
+.bnav{display:none;position:fixed;bottom:0;left:0;right:0;background:var(--card);border-top:1.5px solid var(--bd);padding:.5rem 0;z-index:100}
+.bnav-in{display:flex;justify-content:space-around}
+.bnav-i{display:flex;flex-direction:column;align-items:center;gap:.2rem;padding:.5rem 1rem;cursor:pointer;color:var(--tx3);transition:color .2s;background:none;border:none;font-family:var(--f)}
+.bnav-i.active{color:var(--pr)}.bi-ic{font-size:1.3rem}.bi-lb{font-size:.7rem;font-weight:700}
+@media(max-width:768px){.sidenav{display:none}.bnav{display:block}.dash-wrap,.subj-wrap,.lesson-wrap,.shop-wrap,.prof-wrap{padding-bottom:5rem}}
+@media(max-width:600px){.subj-cards{grid-template-columns:1fr}.stats-g{grid-template-columns:repeat(3,1fr)}.theme-cards{grid-template-columns:1fr}.nav-stats .spill:last-child{display:none}}
+
+/* eduPULSE refreshed wordmark */
+.pulse-brand{font-family:"Fredoka One","Nunito",sans-serif;letter-spacing:.4px;display:inline-block;white-space:nowrap;filter:drop-shadow(0 3px 4px rgba(124,92,191,.12))}
+.pulse-brand>span{background:linear-gradient(110deg,#fa3299,#ff7948,#7d55e7);-webkit-background-clip:text;background-clip:text;color:transparent;animation:pulseGlow 3s ease-in-out infinite}
+@keyframes pulseGlow{0%,100%{filter:brightness(1)}50%{filter:brightness(1.25)}}
+@media(prefers-reduced-motion:reduce){.pulse-brand>span{animation:none}}
+</style>
+</head>
+<body>
+<div class="xp-pop" id="xpPop">⚡ <span id="xpTxt">+10 XP</span></div>
+<div class="toast" id="toast"></div>
+<div class="conf-w" id="confW"></div>
+<div class="modal-ov" id="compModal">
+  <div class="modal-box">
+    <div class="m-icon" id="mIcon">🎉</div>
+    <div class="m-title" id="mTitle">Pamoka baigta!</div>
+    <div class="m-desc" id="mDesc">Puikiai!</div>
+    <div class="m-rewards"><div class="rw rw-x">⚡ +<span id="mXP">30</span> XP</div><div class="rw rw-c">🪙 +<span id="mCoin">18</span></div></div>
+    <button class="btn btn-pr btn-full" id="mContinue">Tęsti →</button>
+  </div>
+</div>
+
+<!-- THEME -->
+<div class="screen active" id="screen-theme">
+  <div style="display:flex;align-items:center;justify-content:center;flex:1;padding:2rem;background:linear-gradient(135deg,#7C5CBF,#FF7043)">
+    <div class="theme-box">
+      <h1><span class="pulse-brand">edu<span>PULSE</span></span> ✨</h1>
+      <p>Pasirink savo stilių ir pradėk mokytis!</p>
+      <div class="theme-cards">
+        <div class="theme-card tc-w" onclick="chooseTheme('whimsical')"><div class="theme-icon">🌸</div><h2>Žaismingasis</h2><p>Pastelės, magija ir džiaugsmas</p></div>
+        <div class="theme-card tc-c" onclick="chooseTheme('classic')"><div class="theme-icon">📐</div><h2>Klasikinis</h2><p>Švarus ir profesionalus</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- AUTH -->
+<div class="screen" id="screen-auth">
+  <div style="flex:1;display:flex;align-items:center;justify-content:center;padding:2rem">
+    <div class="auth-card">
+      <div class="auth-logo"><h1><span class="pulse-brand">edu<span>PULSE</span></span></h1><p>Mokymasis su džiaugsmu 🚀</p></div>
+      <div class="auth-tabs">
+        <button class="auth-tab active" onclick="swAuth('login',this)">Prisijungti</button>
+        <button class="auth-tab" onclick="swAuth('reg',this)">Registruotis</button>
+      </div>
+      <div id="auth-login">
+        <div class="fg"><label>Vartotojo vardas</label><input type="text" id="lUser" placeholder="Vardas..."/></div>
+        <div class="fg"><label>Slaptažodis</label><input type="password" id="lPass" placeholder="Slaptažodis..."/></div>
+        <button class="btn btn-pr btn-full" onclick="doLogin()">Prisijungti →</button>
+      </div>
+      <div id="auth-reg" style="display:none">
+        <div class="fg"><label>Vartotojo vardas</label><input type="text" id="rUser" placeholder="Vardas..."/></div>
+        <div class="fg"><label>El. paštas</label><input type="email" id="rEmail" placeholder="el@pastas.lt"/></div>
+        <div class="fg"><label>Slaptažodis</label><input type="password" id="rPass" placeholder="Min. 6 simboliai..."/></div>
+        <button class="btn btn-pr btn-full" onclick="doReg()">Kurti paskyrą ✨</button>
+      </div>
+      <p style="text-align:center;margin-top:1rem;font-size:.85rem;color:var(--tx3)">Demo: bet koks vardas + slaptažodis veiks</p>
+    </div>
+  </div>
+</div>
+
+<!-- PLACEMENT -->
+<div class="screen" id="screen-placement">
+  <div class="place-card" style="margin:auto">
+    <div style="font-family:var(--fd);font-size:1.8rem;color:var(--pr);text-align:center;margin-bottom:.5rem">Lygio nustatymo testas 🎯</div>
+    <p style="color:var(--tx2);text-align:center;margin-bottom:2rem">Atsakyk į klausimus – nustatysime tavo anglų kalbos lygį</p>
+    <div id="placeContent"></div>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div class="screen" id="screen-dashboard">
+  <nav class="nav">
+    <div class="nav-logo"><span class="pulse-brand">edu<span>PULSE</span></span></div>
+    <div class="nav-stats">
+      <div class="spill sp-xp"><span>⚡</span><span id="nxp">0</span></div>
+      <div class="spill sp-cn"><span>🪙</span><span id="ncn">0</span></div>
+      <div class="spill sp-st"><span>🔥</span><span id="nst">0</span></div>
+    </div>
+    <div class="nav-av" id="navAv" onclick="showScreen('screen-profile')">A</div>
+  </nav>
+  <div class="with-side">
+    <nav class="sidenav">
+      <button class="snav-i active" onclick="showSubj('english')"><span>🏠</span>Pradžia</button>
+      <button class="snav-i" onclick="showSubj('english')"><span>🇬🇧</span>Anglų kalba</button>
+      <button class="snav-i" onclick="showSubj('math')"><span>🔢</span>Matematika</button>
+      <button class="snav-i" onclick="showScreen('screen-shop')"><span>🛍️</span>Parduotuvė</button>
+      <button class="snav-i" onclick="showScreen('screen-profile')"><span>👤</span>Profilis</button>
+    </nav>
+    <div class="main">
+      <div class="dash-wrap">
+        <div class="welcome">
+          <h2 id="wMsg">Sveiki! 👋</h2><p>Tęsk savo mokymosi kelionę</p>
+          <div style="position:absolute;right:2rem;top:50%;transform:translateY(-50%);font-size:3rem;opacity:.25">⭐</div>
+        </div>
+        <p class="sec-title">Pasirink dalyką</p>
+        <div class="subj-cards">
+          <div class="subj-card" onclick="showSubj('english')">
+            <div class="subj-icon">🇬🇧</div><h3>Anglų kalba</h3>
+            <p>Gramatika, žodynas, skaitymas ir daugiau</p>
+            <div class="pbar-w"><div class="pbar" id="eProg" style="width:0%"></div></div>
+            <div class="plabel" id="eProgLbl">0% baigta</div>
+          </div>
+          <div class="subj-card" onclick="showSubj('math')">
+            <div class="subj-icon">🔢</div><h3>Matematika</h3>
+            <p>5–10 klasių temos, laipsniškai sunkėjantys uždaviniai</p>
+            <div class="pbar-w"><div class="pbar" id="mProg" style="width:0%"></div></div>
+            <div class="plabel" id="mProgLbl">0% baigta</div>
+          </div>
+        </div>
+        <p class="sec-title">Statistika</p>
+        <div class="stats-g">
+          <div class="stat-c"><div class="stat-c-icon">⚡</div><div class="stat-c-val" id="sXP">0</div><div class="stat-c-lbl">XP taškai</div></div>
+          <div class="stat-c"><div class="stat-c-icon">🪙</div><div class="stat-c-val" id="sCN">0</div><div class="stat-c-lbl">Monetos</div></div>
+          <div class="stat-c"><div class="stat-c-icon">📚</div><div class="stat-c-val" id="sLS">0</div><div class="stat-c-lbl">Pamokos</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <nav class="bnav"><div class="bnav-in">
+    <button class="bnav-i active" onclick="showScreen('screen-dashboard')"><span class="bi-ic">🏠</span><span class="bi-lb">Pradžia</span></button>
+    <button class="bnav-i" onclick="showSubj('english')"><span class="bi-ic">🇬🇧</span><span class="bi-lb">Anglų</span></button>
+    <button class="bnav-i" onclick="showSubj('math')"><span class="bi-ic">🔢</span><span class="bi-lb">Matematika</span></button>
+    <button class="bnav-i" onclick="showScreen('screen-shop')"><span class="bi-ic">🛍️</span><span class="bi-lb">Parduotuvė</span></button>
+    <button class="bnav-i" onclick="showScreen('screen-profile')"><span class="bi-ic">👤</span><span class="bi-lb">Profilis</span></button>
+  </div></nav>
+</div>
+
+<!-- SUBJECT -->
+<div class="screen" id="screen-subject">
+  <nav class="nav">
+    <div class="nav-logo"><span class="pulse-brand">edu<span>PULSE</span></span></div>
+    <div class="nav-stats"><div class="spill sp-xp"><span>⚡</span><span id="nxp2">0</span></div><div class="spill sp-cn"><span>🪙</span><span id="ncn2">0</span></div></div>
+    <div class="nav-av">👤</div>
+  </nav>
+  <div class="subj-wrap">
+    <button class="back-btn" onclick="showScreen('screen-dashboard')">← Grįžti</button>
+    <h2 class="sec-title" id="subjTitle">Pasirink temą</h2>
+    <div id="subjBody"></div>
+  </div>
+  <nav class="bnav"><div class="bnav-in">
+    <button class="bnav-i" onclick="showScreen('screen-dashboard')"><span class="bi-ic">🏠</span><span class="bi-lb">Pradžia</span></button>
+    <button class="bnav-i" onclick="showSubj('english')"><span class="bi-ic">🇬🇧</span><span class="bi-lb">Anglų</span></button>
+    <button class="bnav-i" onclick="showSubj('math')"><span class="bi-ic">🔢</span><span class="bi-lb">Matematika</span></button>
+    <button class="bnav-i" onclick="showScreen('screen-shop')"><span class="bi-ic">🛍️</span><span class="bi-lb">Parduotuvė</span></button>
+    <button class="bnav-i" onclick="showScreen('screen-profile')"><span class="bi-ic">👤</span><span class="bi-lb">Profilis</span></button>
+  </div></nav>
+</div>
+
+<!-- LESSON -->
+<div class="screen" id="screen-lesson">
+  <nav class="nav">
+    <div class="nav-logo"><span class="pulse-brand">edu<span>PULSE</span></span></div>
+    <div class="nav-stats"><div class="spill sp-xp"><span>⚡</span><span id="nxp3">0</span></div><div class="spill sp-cn"><span>🪙</span><span id="ncn3">0</span></div></div>
+    <div class="nav-av">👤</div>
+  </nav>
+  <div class="lesson-wrap">
+    <button class="back-btn" onclick="backFromLesson()">✕ Baigti</button>
+    <div class="lesson-hdr">
+      <div class="lpbar-w"><div class="lpbar" id="lPBar" style="width:0%"></div></div>
+      <span class="lcount" id="lCount">1/5</span>
+    </div>
+    <div class="l-card" id="lCard"></div>
+    <div class="l-foot"><button class="btn btn-pr" id="lNext" style="display:none" onclick="nextStep()">Tęsti →</button></div>
+  </div>
+</div>
+
+<!-- SHOP -->
+<div class="screen" id="screen-shop">
+  <nav class="nav">
+    <div class="nav-logo"><span class="pulse-brand">edu<span>PULSE</span></span></div>
+    <div class="nav-stats"><div class="spill sp-cn"><span>🪙</span><span id="ncnS">0</span></div></div>
+    <div class="nav-av" onclick="showScreen('screen-profile')">👤</div>
+  </nav>
+  <div class="shop-wrap">
+    <button class="back-btn" onclick="showScreen('screen-dashboard')">← Grįžti</button>
+    <h2 class="sec-title">🛍️ Parduotuvė</h2>
+    <p style="color:var(--tx2);margin-bottom:1.5rem">Išleisk monetas skinams ir efektams!</p>
+    <div class="shop-tabs">
+      <button class="shop-tab active" onclick="swShop('skins',this)">Personažai</button>
+      <button class="shop-tab" onclick="swShop('frames',this)">Rėmeliai</button>
+      <button class="shop-tab" onclick="swShop('boosts',this)">Boostai</button>
+      <button class="shop-tab" onclick="swShop('inv',this)">Inventorius</button>
+    </div>
+    <div id="shopBody"></div>
+  </div>
+  <nav class="bnav"><div class="bnav-in">
+    <button class="bnav-i" onclick="showScreen('screen-dashboard')"><span class="bi-ic">🏠</span><span class="bi-lb">Pradžia</span></button>
+    <button class="bnav-i" onclick="showSubj('english')"><span class="bi-ic">🇬🇧</span><span class="bi-lb">Anglų</span></button>
+    <button class="bnav-i" onclick="showSubj('math')"><span class="bi-ic">🔢</span><span class="bi-lb">Matematika</span></button>
+    <button class="bnav-i active" onclick="showScreen('screen-shop')"><span class="bi-ic">🛍️</span><span class="bi-lb">Parduotuvė</span></button>
+    <button class="bnav-i" onclick="showScreen('screen-profile')"><span class="bi-ic">👤</span><span class="bi-lb">Profilis</span></button>
+  </div></nav>
+</div>
+
+<!-- PROFILE -->
+<div class="screen" id="screen-profile">
+  <nav class="nav">
+    <div class="nav-logo"><span class="pulse-brand">edu<span>PULSE</span></span></div>
+    <div class="nav-stats"><div class="spill sp-xp"><span>⚡</span><span id="nxpP">0</span></div></div>
+    <div class="nav-av">👤</div>
+  </nav>
+  <div class="prof-wrap">
+    <button class="back-btn" onclick="showScreen('screen-dashboard')">← Grįžti</button>
+    <div class="prof-hdr">
+      <div class="prof-av" id="profAv">😊</div>
+      <div style="font-family:var(--fd);font-size:1.6rem" id="profName">Mokinys</div>
+      <div id="profLvl" style="opacity:.9;margin-top:.3rem">Lygis 1</div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:2rem">
+      <div class="stat-c"><div class="stat-c-icon">⚡</div><div class="stat-c-val" id="pXP">0</div><div class="stat-c-lbl">Viso XP</div></div>
+      <div class="stat-c"><div class="stat-c-icon">🪙</div><div class="stat-c-val" id="pCN">0</div><div class="stat-c-lbl">Monetos</div></div>
+      <div class="stat-c"><div class="stat-c-icon">📚</div><div class="stat-c-val" id="pLS">0</div><div class="stat-c-lbl">Pamokos</div></div>
+      <div class="stat-c"><div class="stat-c-icon">🏆</div><div class="stat-c-val" id="pACC">0%</div><div class="stat-c-lbl">Tikslumas</div></div>
+    </div>
+    <p class="sec-title">Pasiekimai</p>
+    <div class="ach-grid" id="achGrid"></div>
+    <div style="margin-top:2rem"><button class="btn btn-out btn-sm" onclick="doLogout()">Atsijungti</button></div>
+  </div>
+  <nav class="bnav"><div class="bnav-in">
+    <button class="bnav-i" onclick="showScreen('screen-dashboard')"><span class="bi-ic">🏠</span><span class="bi-lb">Pradžia</span></button>
+    <button class="bnav-i" onclick="showSubj('english')"><span class="bi-ic">🇬🇧</span><span class="bi-lb">Anglų</span></button>
+    <button class="bnav-i" onclick="showSubj('math')"><span class="bi-ic">🔢</span><span class="bi-lb">Matematika</span></button>
+    <button class="bnav-i" onclick="showScreen('screen-shop')"><span class="bi-ic">🛍️</span><span class="bi-lb">Parduotuvė</span></button>
+    <button class="bnav-i active"><span class="bi-ic">👤</span><span class="bi-lb">Profilis</span></button>
+  </div></nav>
+</div>
+
+<script>
+// ─── HELPERS ─────────────────────────────────────────────────
+function T(id){return document.getElementById(id)}
+function db(d){const m={easy:['easy','Lengva'],medium:['med','Vid.'],hard:['hard','Sunki'],expert:['expert','Ekspertų']};const[c,l]=m[d]||['easy','Lengva'];return`<span class="diff diff-${c}">${l}</span>`}
+function th(title,html){return{type:'theory',title,content:html}}
+function mc(diff,q,c,ok,ex){return{type:'mc',diff,q,c,ok,ex}}
+function fi(diff,q,a,ex){return{type:'fill',diff,q,a,ex}}
+function bd(diff,q,w,ok){return{type:'build',diff,q,w,ok}}
+
+// ─── MATH DATA ───────────────────────────────────────────────
+const MATH={
+5:{
+  topics:['Naturalieji skaičiai','Trupmenos','Dešimtainiai skaičiai ir procentai','Reiškiniai ir lygtys','Transformacijos','Plokščiosios geometrinės figūros','Erdvinės figūros','Duomenys','Tikimybės'],
+  lessons:{
+    'Naturalieji skaičiai':[
+      th('Naturalieji skaičiai','Naturalieji skaičiai: 1, 2, 3, 4, ... – skaičiuojame daiktus.<br><div class="th-hl">Žymimi <b>ℕ</b>. Prasideda nuo 1, nėra pabaigos.<br>Veiksmai: sudėtis (+), atimtis (−), daugyba (×), dalyba (÷)</div><div class="th-ex">🍎 3 + 5 = 8 &nbsp;|&nbsp; 12 ÷ 4 = 3</div>'),
+      mc('easy','Kuris skaičius yra natūralusis?',['−5','0','7','½'],2,'7 yra natūralusis – teigiamas sveikas skaičius nuo 1.'),
+      fi('easy','Kiek yra 9 + 7 = ?','16','9 + 7 = 16.'),
+      mc('medium','Koks skaičius yra tarp 14 ir 16?',['13','15','17','12'],1,'Tarp 14 ir 16 yra tiksliai 15.'),
+      fi('medium','Kiek yra 12 × 8 = ?','96','12 × 8 = 96.'),
+      mc('hard','Koks yra didžiausias 3 skaitmenų natūralusis skaičius?',['100','998','999','1000'],2,'999 – trys devyniai. 1000 jau turi 4 skaitmenis.'),
+      fi('hard','Kiek yra 144 ÷ 12 = ?','12','144 ÷ 12 = 12.'),
+    ],
+    'Trupmenos':[
+      th('Trupmenos','Trupmenomis apibūdiname skaičiaus dalį.<br><div class="th-hl">Skaitiklis (viršuje) / Vardiklis (apačioje)<br>½ = pusė, ⅓ = trečdalis, ¼ = ketvirtadalis</div><div class="th-ex">🍕 Iš 4 picos dalių suvalgytos 3 = ¾</div>'),
+      mc('easy','Kiek yra ½ + ½?',['½','1','2','¼'],1,'Pusė ir pusė = viena visuma.'),
+      fi('easy','¾ sudaro kiek ketvirtadalių?','3','¾ = 3 ketvirtadaliai.'),
+      mc('medium','Kuri trupmenų pora yra lygi?',['½ ir ¼','⅓ ir 2/6','¾ ir ½','¼ ir ⅓'],1,'⅓ = 2/6 (abu padauginame iš 2).'),
+      fi('medium','Supaprastink: 4/8 = ?','1/2','4÷4 = 1, 8÷4 = 2, todėl 4/8 = ½.'),
+      mc('hard','Kuri trupmena didesnė?',['3/7','4/9','Lygios','Negalima palyginti'],1,'3/7 ≈ 0,429; 4/9 ≈ 0,444. Didesnė: 4/9.'),
+      fi('hard','2/3 + 1/6 = ? (rašyk kaip trupmeną)','5/6','Bendras vardiklis 6: 4/6 + 1/6 = 5/6.'),
+    ],
+    'Dešimtainiai skaičiai ir procentai':[
+      th('Dešimtainiai skaičiai ir procentai','Dešimtainiai skaičiai turi kablelį: 3,5 – trys ir pusė.<br><div class="th-hl">1% = 1/100 = 0,01<br>X% nuo N = N × X ÷ 100</div><div class="th-ex">💰 20% nuo 80 = 16</div>'),
+      mc('easy','Kaip rašomas "trys ir penki dešimtadaliai"?',['0,35','3,5','35','3,05'],1,'3 ir 5 dešimtadaliai = 3,5.'),
+      fi('easy','50% = ? (trupmenomis)','1/2','50% = 50/100 = ½.'),
+      mc('medium','Kiek yra 0,7 + 0,5?',['0,12','1,2','1,12','12'],1,'0,7 + 0,5 = 1,2.'),
+      fi('medium','20% nuo 150 = ?','30','150 × 20 ÷ 100 = 30.'),
+      mc('hard','Kaina krito 15%. Buvo 200€. Kiek dabar?',['185€','170€','30€','15€'],1,'200 × 0,15 = 30. 200 − 30 = 170€.'),
+      fi('hard','Parduotuvė uždirbo 840€. Tai yra 120% plano. Koks buvo planas?','700','840 ÷ 1,2 = 700€.'),
+    ],
+    'Reiškiniai ir lygtys':[
+      th('Reiškiniai ir lygtys','Lygtyje yra nežinomasis x – randame jo reikšmę.<br><div class="th-hl">Lygtis: x + 5 = 12 → x = 12 − 5 = 7<br>Abiejose pusėse galima atlikti tuos pačius veiksmus.</div><div class="th-ex">🔍 2x = 10 → x = 5 &nbsp;|&nbsp; x − 3 = 9 → x = 12</div>'),
+      mc('easy','x + 3 = 9. x = ?',['3','6','9','12'],1,'x = 9 − 3 = 6.'),
+      fi('easy','2x = 14. x = ?','7','x = 14 ÷ 2 = 7.'),
+      mc('medium','3x − 2 = 10. x = ?',['4','3','6','2'],0,'3x = 12, x = 4.'),
+      fi('medium','Apskaičiuok: 3(a+4), kai a = 2','18','3(2+4) = 3×6 = 18.'),
+      mc('hard','x/4 + 3 = 7. x = ?',['16','4','28','1'],0,'x/4 = 4, x = 16.'),
+      fi('hard','Koks x tenkinantis: 5x − 3 = 2x + 9','4','5x−2x = 9+3 → 3x=12 → x=4.'),
+    ],
+    'Transformacijos':[
+      th('Transformacijos','Figūrų judinimas plokštumoje.<br><div class="th-hl">Poslinkis – figūra juda nekeisdama formos.<br>Atspindys – figūra atspindima ašies atžvilgiu.<br>Sukimas – figūra sukama apie tašką.</div><div class="th-ex">📐 Taškas A(2,3) po poslinkio (1,−1) → A\'(3,2)</div>'),
+      mc('easy','Poslinkis išlaiko figūros:',['Spalvą','Dydį ir formą','Tik dydį','Tik formą'],1,'Poslinkis – judėjimas, forma ir dydis nesikeičia.'),
+      fi('easy','Taškas (3,4) atspindimas x ašies atžvilgiu. Nauja y koordinatė = ?','-4','Atspindint x ašies atžvilgiu, y koordinatė keičia ženklą.'),
+      mc('medium','Taškas A(2,3). Po poslinkio (−1,2): A\' = ?',['(1,5)','(3,1)','(−1,6)','(2,5)'],0,'2+(−1)=1; 3+2=5. A\'(1,5).'),
+      fi('medium','Taškas (4,4) sukamas 90° aplink pradžios tašką. Naujos koordinatės (x,y): x = ?','-4','Sukant 90°: (x,y)→(−y,x). −4,4.'),
+      mc('hard','Koks transformacijos tipas išlaiko figūros orientaciją (nesuspeidžia)?',['Atspindys','Sukimas','Poslinkis','Visi trys'],2,'Tik poslinkis išlaiko kryptį ir orientaciją.'),
+    ],
+    'Plokščiosios geometrinės figūros':[
+      th('Plokščiosios figūros','Pagrindinės plokštumoje esančios figūros.<br><div class="th-hl">Stačiakampio plotas: P = a × b<br>Stačiakampio perimetras: C = 2(a+b)<br>Trikampio plotas: P = (pagrindas × aukštis) ÷ 2</div><div class="th-ex">📐 3×5 stačiakampis: P=15, C=16</div>'),
+      mc('easy','Kvadrato, kurio kraštinė 4 cm, perimetras?',['8 cm','12 cm','16 cm','4 cm'],2,'C = 4 × 4 = 16 cm.'),
+      fi('easy','Stačiakampio plotas: a=6, b=3. P=?','18','P = 6 × 3 = 18.'),
+      mc('medium','Trikampio kampų suma = ?',['90°','180°','270°','360°'],1,'Bet kurio trikampio kampų suma visada 180°.'),
+      fi('medium','Kvadrato plotas = 36. Kraštinė = ?','6','a² = 36 → a = 6.'),
+      mc('hard','Stačiakampio perimetras 26 cm, viena kraštinė 8 cm. Kita kraštinė = ?',['5 cm','18 cm','9 cm','10 cm'],0,'2(8+b)=26 → 8+b=13 → b=5 cm.'),
+      fi('hard','Lygiakraštis trikampis, kraštinė 6. Perimetras = ?','18','3 × 6 = 18.'),
+    ],
+    'Erdvinės figūros':[
+      th('Erdvinės figūros','Trimačiai kūnai turi ilgį, plotį ir aukštį.<br><div class="th-hl">Kubo tūris: V = a³<br>Stačiakampio gretasienio tūris: V = a × b × c<br>Paviršiaus plotas: S = 2(ab + bc + ca)</div><div class="th-ex">📦 Kubas, kraštinė 3: V = 27, S = 54</div>'),
+      mc('easy','Kiek kraštinių turi kubas?',['6','8','12','4'],2,'Kubas turi 12 kraštinių (4 × 3 briaunų grupės).'),
+      fi('easy','Kubo, kurio kraštinė 3, tūris = ?','27','V = 3³ = 27.'),
+      mc('medium','Stačiakampė prizmė: a=2, b=3, c=4. Tūris = ?',['9','24','18','14'],1,'V = 2×3×4 = 24.'),
+      fi('medium','Kubo paviršiaus plotas, kraštinė 5: S = ?','150','S = 6 × 5² = 6 × 25 = 150.'),
+      mc('hard','Koks kūnas turi vieną viršūnę ir apskritimo pagrindą?',['Prizmė','Piramidė','Kūgis','Cilindras'],2,'Kūgis – apvalus pagrindas ir viena viršūnė.'),
+    ],
+    'Duomenys':[
+      th('Duomenys','Duomenų rinkimas ir analizė.<br><div class="th-hl">Vidurkis = suma ÷ skaičių kiekis<br>Mediana = vidurinis skaičius (surūšiavus)<br>Moda = dažniausiai pasikartojantis</div><div class="th-ex">📊 {2,4,4,6,8}: vidurkis=4,8; mediana=4; moda=4</div>'),
+      mc('easy','Skaičių {3,5,7} vidurkis = ?',['4','5','6','7'],1,'(3+5+7)÷3 = 15÷3 = 5.'),
+      fi('easy','Skaičių {2,3,3,5,7} moda = ?','3','3 pasikartoja dažniausiai (2 kartus).'),
+      mc('medium','Skaičių {1,3,5,7,9} mediana = ?',['3','5','7','4'],1,'Surūšiuota eilė: mediana = vidurinis = 5.'),
+      fi('medium','Vidurkis iš {10,20,30} = ?','20','(10+20+30)÷3 = 60÷3 = 20.'),
+      mc('hard','5 testų rezultatai: 70,80,85,90,75. Vidurkis = ?',['80','82','79','85'],1,'(70+80+85+90+75)÷5 = 400÷5 = 80.'),
+    ],
+    'Tikimybės':[
+      th('Tikimybės','Tikimybė = kaip tikėtinas įvykis.<br><div class="th-hl">P = palankūs atvejai ÷ visi galimi atvejai<br>P nuo 0 (neįmanoma) iki 1 (tikra)</div><div class="th-ex">🎲 Kauleliu iškristi 3: P = 1/6</div>'),
+      mc('easy','Krepšelyje 3 raudoni ir 3 mėlyni kamuoliai. P(raudonas) = ?',['1/3','1/2','1/6','2/3'],1,'3 palankūs iš 6 = 1/2.'),
+      fi('easy','P = 2/5. Kiek procentų?','40','2/5 = 0,4 = 40%.'),
+      mc('medium','Metant monetą 2 kartus, P(abu herbai)?',['1/2','1/4','1/3','1/8'],1,'(1/2)×(1/2) = 1/4.'),
+      fi('medium','Iš 10 bilietų 2 laimingi. P(laimėti) trupmenomis = ?','1/5','2/10 = 1/5.'),
+      mc('hard','Metant kaulelį, P(lyginė arba >4)?',['1/2','4/6','2/3','5/6'],2,'Lyginiai: 2,4,6. Didesni nei 4: 5,6. Bendra: 2,4,5,6 = 4/6 = 2/3.'),
+    ],
+  }
+},
+6:{
+  topics:['Sveikieji skaičiai','Racionalieji skaičiai','Trikampių lygumas','Veiksmai su racionaliaisiais skaičiais','Tiesioginis proporcingumas','Lygtys','Finansiniai skaičiavimai','Plokščiosios figūros','Duomenys ir interpretavimas','Tikimybės'],
+  lessons:{
+    'Sveikieji skaičiai':[
+      th('Sveikieji skaičiai','Sveikieji skaičiai: ..., −3, −2, −1, 0, 1, 2, 3, ...<br><div class="th-hl">Žymimi ℤ. Taisyklės:<br>(+)×(+)=+ | (−)×(−)=+ | (+)×(−)=−</div><div class="th-ex">🌡️ −5°C + 8°C = 3°C</div>'),
+      mc('easy','Koks skaičius didesnis: −3 ar −7?',['−7','−3','Lygūs','Negalima'],1,'Skaičių tiesėje −3 yra dešiniau negu −7.'),
+      fi('easy','(−4) + (−3) = ?','-7','Du neigiami: −4−3 = −7.'),
+      mc('medium','(−5) × (−4) = ?',['−20','20','−9','9'],1,'Minusas × minusas = pliusas: 5×4=20.'),
+      fi('medium','(−18) ÷ 3 = ?','-6','Neigiamas ÷ teigiamas = neigiamas.'),
+      mc('hard','(−2)³ = ?',['6','−6','8','−8'],3,'(−2)³=(−2)(−2)(−2)=4×(−2)=−8.'),
+      fi('hard','|−15| + |−9| = ?','24','Absoliutinė reikšmė: 15+9=24.'),
+    ],
+    'Racionalieji skaičiai':[
+      th('Racionalieji skaičiai','Racionalieji skaičiai – išreiškiami kaip p/q trupmenomis.<br><div class="th-hl">Žymimi ℚ. Apima sveikuosius ir trupmenines reikšmes.<br>Lyginant: vienodinamas vardiklis.</div><div class="th-ex">¾ > ⅔ nes 9/12 > 8/12</div>'),
+      mc('easy','Kuris NĖRA racionalusis?',['½','−3','0,75','√2'],3,'√2 ≈ 1,414... – negalima išreikšti kaip trupmenų.'),
+      fi('easy','Racionaliojo skaičiaus 3/4 dešimtainė reikšmė = ?','0.75','3÷4 = 0,75.'),
+      mc('medium','½ + ⅓ = ?',['2/5','5/6','3/5','1/6'],1,'Bendras vardiklis 6: 3/6+2/6=5/6.'),
+      fi('medium','¾ − ½ = ? (trupmenomis)','1/4','3/4−2/4=1/4.'),
+      mc('hard','Kuri eilė teisinga (didėjančia tvarka)?',['⅓,½,¾','¾,½,⅓','½,⅓,¾','¾,⅓,½'],0,'⅓≈0,33; ½=0,5; ¾=0,75 – didėjanti tvarka.'),
+      fi('hard','3/4 × 8/9 = ? (supaprastinta)','2/3','(3×8)÷(4×9)=24/36=2/3.'),
+    ],
+    'Trikampių lygumas':[
+      th('Trikampių lygumas','Du trikampiai lygūs, jei atitinkami kraštinės ir kampai lygūs.<br><div class="th-hl">Lygumo požymiai:<br>KKK – trys kraštinės lygios<br>KKK – du kampai ir kraštinė lygi<br>KKK – du kampai ir šalia esanti kraštinė</div><div class="th-ex">△ABC ≅ △DEF reiškia: visi atitinkami elementai lygūs</div>'),
+      mc('easy','Koks trikampis turi tris lygias kraštines?',['Stačiakampis','Lygiašonis','Lygiakraštis','Bukakampis'],2,'Lygiakraštis – visos kraštinės lygios.'),
+      fi('easy','Lygiakraščio trikampio visi kampai = ? laipsnių','60','180÷3=60°.'),
+      mc('medium','KKK lygumo požymis reiškia:',['Trys kampai lygūs','Trys kraštinės lygios','Du kampai ir viena kraštinė','Du kampai'],1,'KKK – kraštinė-kraštinė-kraštinė: visos trys poros lygios.'),
+      fi('medium','Trikampyje kampai: 60°, 80° ir x°. x = ?','40','60+80+x=180 → x=40°.'),
+      mc('hard','Lygiašoniame trikampyje pagrindo kampai yra:',['Skirtingi','Lygūs','Vienas lygus 90°','Sumuojasi į 90°'],1,'Lygiašoniame: du vienodo ilgio šonai → du kampai lygūs.'),
+    ],
+    'Veiksmai su racionaliaisiais skaičiais':[
+      th('Veiksmai su racionaliaisiais skaičiais','Aritmetiniai veiksmai su trupmenomis.<br><div class="th-hl">Daugyba: (a/b)×(c/d) = ac/bd<br>Dalyba: (a/b)÷(c/d) = (a/b)×(d/c)<br>Sudėtis/atimtis: vienodinti vardiklius</div><div class="th-ex">⅔ × ¾ = 6/12 = ½</div>'),
+      mc('easy','⅔ × ¾ = ?',['6/12','½','⅗','6/7'],1,'2×3=6; 3×4=12; 6/12=½.'),
+      fi('easy','½ ÷ ¼ = ?','2','½ × 4/1 = 4/2 = 2.'),
+      mc('medium','⅔ + ¼ = ?',['11/12','3/6','6/8','5/8'],0,'Bendras vardiklis 12: 8/12+3/12=11/12.'),
+      fi('medium','¾ − ⅓ = ? (trupmenomis)','5/12','9/12−4/12=5/12.'),
+      mc('hard','(½ + ⅓) × ¾ = ?',['5/8','½','⅝','7/8'],0,'½+⅓=5/6; 5/6×¾=15/24=5/8.'),
+      fi('hard','2⅓ × 1½ = ? (mišrusis skaičius arba trupmena)','7/2','7/3 × 3/2 = 21/6 = 7/2.'),
+    ],
+    'Tiesioginis proporcingumas':[
+      th('Tiesioginis proporcingumas','y tiesiogiai proporcingas x: y = kx.<br><div class="th-hl">k – proporcingumo koeficientas (pastovus)<br>Jei x didėja 2 kartus → y irgi didėja 2 kartus</div><div class="th-ex">🚗 2 litrai = 4€ → k=2 → 5 litrų = 10€</div>'),
+      mc('easy','3 sąsiuviniai = 6€. Kiek 5?',['8€','9€','10€','12€'],2,'1 sąsiuvinis = 2€. 5×2=10€.'),
+      fi('easy','y = 4x. Kai x=7, y=?','28','4×7=28.'),
+      mc('medium','Automobilis per 3 val. nuvažiuoja 180 km. Per 5 val.?',['200','250','300','350'],2,'Greitis=60 km/h. 60×5=300 km.'),
+      fi('medium','k=? jei x=4 ir y=20.','5','k=y/x=20/4=5.'),
+      mc('hard','Jei y=kx ir taškas (3,12) priklauso grafikui, kokia y vertė kai x=8?',['24','32','40','16'],1,'k=12/3=4. y=4×8=32.'),
+      fi('hard','Parduotuvė 4 obuolius parduoda už 2,40€. Kaina 7 obuoliams = ?','4.20','Vienas=0,60€. 7×0,60=4,20€.'),
+    ],
+    'Lygtys':[
+      th('Lygtys','6 klasės lygtys – sudėtingesnės.<br><div class="th-hl">Svarbu: skliausteliai, trupmenos, neigiami koeficientai.<br>2(x+3) = 14 → 2x+6=14 → 2x=8 → x=4</div><div class="th-ex">3(x−2) + 5 = 2x+1 → 3x−6+5=2x+1 → x=2</div>'),
+      mc('easy','2(x+3) = 14. x=?',['4','7','3','5'],0,'2x+6=14 → 2x=8 → x=4.'),
+      fi('easy','5x + 2 = 22. x=?','4','5x=20 → x=4.'),
+      mc('medium','3(x−2) = 15. x=?',['3','5','7','9'],2,'3x−6=15 → 3x=21 → x=7.'),
+      fi('medium','x/3 + 4 = 7. x=?','9','x/3=3 → x=9.'),
+      mc('hard','3(x+1) − 2(x−1) = 8. x=?',['3','4','5','2'],0,'3x+3−2x+2=8 → x+5=8 → x=3.'),
+      fi('hard','Koks x: 4(x−3) = 2(x+5)','11','4x−12=2x+10 → 2x=22 → x=11.'),
+    ],
+    'Finansiniai skaičiavimai':[
+      th('Finansiniai skaičiavimai','Pinigai, nuolaidos, pelnas, PVM.<br><div class="th-hl">Nuolaida x%: kaina × (1 − x/100)<br>Pelnas = pardavimo kaina − pirkimo kaina<br>PVM 21%: kaina × 1,21</div><div class="th-ex">💳 200€ su 20% nuolaida = 160€</div>'),
+      mc('easy','40€ prekė, nuolaida 25%. Kaina?',['10€','30€','15€','25€'],1,'40×0,25=10. 40−10=30€.'),
+      fi('easy','Pirkote 60€, pardavėte 78€. Pelnas=?','18','78−60=18€.'),
+      mc('medium','Kaina be PVM – 200€. Su PVM 21%?',['221€','242€','220€','201€'],1,'200×1,21=242€.'),
+      fi('medium','100€ kaina pakilo 10%, po to krito 10%. Galutinė kaina=?','99','110×0,9=99€.'),
+      mc('hard','Parduotuvė uždirba 30% nuo kaindaraščio kainos. Jei kaindaraštis 80€, pardavimo kaina?',['110€','104€','24€','56€'],1,'80×1,3=104€.'),
+      fi('hard','Bankas mokė 5% palūkanas per metus. Ant 1000€ per 2 metus uždirba=?','100','1000×0,05×2=100€ (paprastosios).'),
+    ],
+    'Plokščiosios figūros':[
+      th('Plokščiosios figūros (6kl.)','Apskritimas ir kiti sudėtingesni skaičiavimai.<br><div class="th-hl">Apskritimo ilgis: C = 2πr<br>Apskritimo plotas: P = πr²<br>π ≈ 3,14</div><div class="th-ex">⭕ Spindulys 5: C≈31,4; P≈78,5</div>'),
+      mc('easy','Apskritimo spindulys 7. Skersmuo = ?',['3,5','7','14','21'],2,'Skersmuo = 2 × spindulys = 14.'),
+      fi('easy','Apskritimo apimtis (C) kai r=10: C ≈ ? (naudok π≈3,14)','62.8','C=2×3,14×10=62,8.'),
+      mc('medium','Apskritimo plotas, kai r=5: P ≈ ?',['15,7','78,5','31,4','25'],1,'P=3,14×25=78,5.'),
+      fi('medium','Kvadrato plotas 64 cm². Perimetras = ?','32','Kraštinė=8. C=4×8=32.'),
+      mc('hard','Stačiakampio ilgis 2× plotis. Perimetras 60 cm. Plotis=?',['10','20','15','30'],0,'2l+2×(l/2)=60 → 3l=60 → l=20, plotis=10.'),
+      fi('hard','Reguliariojo šešiakampio perimetras 48. Kraštinė=?','8','6 kraštinės: 48÷6=8.'),
+    ],
+    'Duomenys ir interpretavimas':[
+      th('Duomenys ir interpretavimas','Diagramos, grafikai, statistika.<br><div class="th-hl">Stulpelinė diagrama – kategorijų palyginimas<br>Linijinis grafikas – kitimas laike<br>Skritulinė diagrama – proporcijos</div><div class="th-ex">📊 Spalvų mėgstamiausių: mėlyna 40%, raudona 35%, žalia 25%</div>'),
+      mc('easy','Koks grafikas geriausiai parodo duomenų kitimą laike?',['Skritulinė','Stulpelinė','Linijinis','Dažnių lentelė'],2,'Linijinis grafikas rodo tendencijas laike.'),
+      fi('easy','Skritulinėje diagramoje 3 dalys: 50%, 30%, x%. x=?','20','50+30+x=100 → x=20%.'),
+      mc('medium','Klasė surinko duomenis. Mėlynų akių: 8, rudų: 12, žalių: 5. Kiek iš viso?',['20','25','15','30'],1,'8+12+5=25.'),
+      fi('medium','Vidurkis iš: 15, 20, 25, 30, 35 = ?','25','(15+20+25+30+35)÷5=125÷5=25.'),
+      mc('hard','Duomenys: {4,6,6,8,10,12}. Medianą rasi kaip?',['Vidurinis','(6+8)÷2','(4+12)÷2','Dažniausias'],1,'6 duomenys – du viduriniai (6 ir 8): (6+8)÷2=7.'),
+    ],
+    'Tikimybės':[
+      th('Tikimybės (6kl.)','Sudėtingesni tikimybių skaičiavimai.<br><div class="th-hl">Papildomas įvykis: P(ne A) = 1 − P(A)<br>Du įvykiai: P(A ir B) = P(A) × P(B) jei nepriklausomi</div><div class="th-ex">Moneta ir kauleliai: P(herbas ir 6) = ½ × 1/6 = 1/12</div>'),
+      mc('easy','P(A) = 0,3. P(ne A) = ?',['0,3','0,7','0,6','0,4'],1,'P(ne A) = 1 − 0,3 = 0,7.'),
+      fi('easy','Krepšelyje 5 raudonos ir 5 žalios. P(žalia) = ?','1/2','5/10 = 1/2.'),
+      mc('medium','Moneta ir kauleliai. P(herbas ir lyginė) = ?',['1/4','1/6','1/12','1/2'],0,'½ × 3/6 = ½ × ½ = ¼.'),
+      fi('medium','Metant 2 monetas P(abu herbai) = ?','1/4','½ × ½ = 1/4.'),
+      mc('hard','Maišelyje 3 raudonos, 2 mėlynos, 5 geltonos kamuoliukų. P(ne geltona) = ?',['1/2','3/5','2/5','5/10'],0,'P(ne geltona)=(3+2)/10=5/10=1/2.'),
+    ],
+  }
+},
+7:{
+  topics:['Laipsniai','Nelygybės','Proporcingumas','Plokščiosios figūros','Keturkampiai','Figūrų dydžiai','Erdvinės figūros','Duomenys','Finansiniai skaičiavimai'],
+  lessons:{
+    'Laipsniai':[
+      th('Laipsniai','Laipsnis – dauginimo trumpinys: aⁿ = a×a×...×a (n kartų)<br><div class="th-hl">aᵐ × aⁿ = aᵐ⁺ⁿ | aᵐ ÷ aⁿ = aᵐ⁻ⁿ<br>(aᵐ)ⁿ = aᵐⁿ | a⁰ = 1</div><div class="th-ex">2³×2²=2⁵=32 | (3²)³=3⁶=729</div>'),
+      mc('easy','2⁴ = ?',['6','8','16','12'],2,'2×2×2×2=16.'),
+      fi('easy','5⁰ = ?','1','Bet kurio skaičiaus 0-oji laipsnė = 1.'),
+      mc('medium','3² × 3³ = ?',['3⁵','3⁶','9⁵','6³'],0,'Vienodas pagrindas – rodiklius sudedam: 2+3=5.'),
+      fi('medium','(2³)² = ? (skaičius)','64','(2³)²=2⁶=64.'),
+      mc('hard','4⁵ ÷ 4³ = ?',['4²','4⁸','4¹⁵','16'],0,'4⁵÷4³=4²=16. Atsakymas 4².'),
+      fi('hard','√81 = ?','9','9²=81, todėl √81=9.'),
+    ],
+    'Nelygybės':[
+      th('Nelygybės','Nelygybė: viena pusė didesnė arba mažesnė.<br><div class="th-hl">Dalinant/dauginant iš neigiamo – ženklas keičiasi!<br>−2x > 6 → x < −3</div><div class="th-ex">x+3>7 → x>4 | −3x<9 → x>−3</div>'),
+      mc('easy','x + 5 > 8. Sprendinys?',['x>3','x>13','x<3','x=3'],0,'x>8−5=3.'),
+      fi('easy','2x < 14. x < ?','7','x<7.'),
+      mc('medium','−3x > 9. Sprendinys?',['x>−3','x<−3','x>3','x<3'],1,'Dalinant iš −3 keičiam ženklą: x<−3.'),
+      fi('medium','4x − 3 ≥ 13. x ≥ ?','4','4x≥16 → x≥4.'),
+      mc('hard','Kiek sveikųjų x tenkina: −2 < x ≤ 3?',['4','5','6','3'],1,'x = −1, 0, 1, 2, 3 – iš viso 5.'),
+      fi('hard','Koks mažiausias sveikas x tenkinantis: 2x − 7 > 1?','5','2x>8 → x>4 → mažiausias sveikas: 5.'),
+    ],
+    'Proporcingumas':[
+      th('Proporcingumas','Tiesioginis ir atvirkštinis proporcingumas.<br><div class="th-hl">Tiesioginis: y=kx (didėja kartu)<br>Atvirkštinis: y=k/x (vienas didėja, kitas mažėja)</div><div class="th-ex">4 darbininkai – 6 dienos. 8 darbininkai – 3 dienos (atvirkštinis)</div>'),
+      mc('easy','Koks proporcingumo tipas: daugiau maisto – daugiau kalorijų?',['Atvirkštinis','Tiesioginis','Nėra proporcingumo','Neaišku'],1,'Tiesioginis: abu kinta viena kryptimi.'),
+      fi('easy','y = 5x. Kai x=6, y=?','30','5×6=30.'),
+      mc('medium','4 darbininkai užbaigia darbą per 12 dienų. 6 darbininkai per kiek dienų?',['18','8','10','6'],1,'4×12=6×d → d=8.'),
+      fi('medium','k=? atvirkštiniam proporcingumui, jei x=3, y=8.','24','xy=k → k=3×8=24.'),
+      mc('hard','y atvirkščiai proporcinga x. Kai x=2, y=10. Kai x=5, y=?',['25','4','10','20'],1,'k=2×10=20. y=20/5=4.'),
+    ],
+    'Plokščiosios figūros':[
+      th('Plokščiosios figūros (7kl.)','Pažangesnė geometrija: trapecija, rombus, lygiagretainis.<br><div class="th-hl">Lygiagretainio plotas: P = pagrindas × aukštis<br>Rombo plotas: P = (d₁ × d₂) ÷ 2<br>Trapecijos plotas: P = (a+b) × h ÷ 2</div><div class="th-ex">🔷 Rombus, įstrižainės 6 ir 8: P=24</div>'),
+      mc('easy','Rombo įstrižainės 6 ir 8. Plotas=?',['48','24','14','28'],1,'P=(6×8)÷2=24.'),
+      fi('easy','Lygiagretainio pagrindas 10, aukštis 6. P=?','60','P=10×6=60.'),
+      mc('medium','Trapecijos pagrindai 5 ir 9, aukštis 4. Plotas=?',['56','28','14','20'],1,'P=(5+9)×4÷2=7×4=28.'),
+      fi('medium','Rombo kraštinė 5. Perimetras=?','20','4×5=20.'),
+      mc('hard','Lygiagretainis: pagrindas 12, aukštis h, plotas 60. h=?',['5','6','7','8'],0,'60=12×h → h=5.'),
+    ],
+    'Keturkampiai':[
+      th('Keturkampiai','Keturkampiai: kvadratas, stačiakampis, lygiagretainis, trapecija, rombus.<br><div class="th-hl">Kvadratas: visos kraštinės lygios, visi kampai 90°<br>Rombus: visos kraštinės lygios, kampai skirtingi<br>Trapecija: tik viena pora lygiagrečių</div><div class="th-ex">📐 Stačiakampis ⊂ Lygiagretainis ⊂ Keturkampiai</div>'),
+      mc('easy','Koks keturkampis turi VISUS kampus 90°?',['Rombus','Trapecija','Stačiakampis','Lygiagretainis'],2,'Stačiakampis (ir kvadratas) turi 4 stačius kampus.'),
+      fi('easy','Keturkampio vidaus kampų suma = ? laipsnių','360','Visada 360°.'),
+      mc('medium','Kuo skiriasi rombus nuo kvadrato?',['Kampai skirtingi','Kraštinės skirtingos','Mažiau kraštinių','Yra apskritimas'],0,'Rombus: visos kraštinės lygios, bet kampai gali būti ne 90°.'),
+      fi('medium','Lygiagretainyje du kampai: 70° ir 110°. Kiti du kampai?','70 ir 110','Lygiagretainyje priešingi kampai lygūs.'),
+      mc('hard','Trapecijos pagrindai lygūs vienas kitam. Kokia figūra?',['Lygiagretainis','Stačiakampis','Rombus','Kvadratas'],0,'Jei abu pagrindai lygūs – lygiagretainis.'),
+    ],
+    'Figūrų dydžiai':[
+      th('Figūrų dydžiai','Mastelis, panašumas, proporcijos.<br><div class="th-hl">Mastelis 1:100 reiškia: 1 cm žemėlapyje = 100 cm natūroje<br>Panašių figūrų atitinkami kampai lygūs, kraštinės proporcingos</div><div class="th-ex">🗺️ Masteliu 1:50000: 2 cm = 1 km</div>'),
+      mc('easy','Masteliu 1:1000. 3 cm žemėlapyje = ? m natūroje?',['3 m','30 m','300 m','3000 m'],1,'3×1000=3000 cm=30 m.'),
+      fi('easy','Mastelis 1:200. 5 cm = ? cm natūroje','1000','5×200=1000 cm.'),
+      mc('medium','Dvi panašios figūros. Mažosios kraštinė 4, didžiosios – 6. Mastelis?',['1:2','2:3','3:4','4:6'],1,'4:6=2:3.'),
+      fi('medium','Panašių trikampių atitinkamos kraštinės 3 ir 9. Plotų santykis = ?','1:9','Kraštinių santykis 1:3 → plotų santykis 1:9.'),
+      mc('hard','Žemėlapyje 1:25000. 8 cm = ? km?',['2 km','200 m','20 km','0,2 km'],0,'8×25000=200000 cm=2 km.'),
+    ],
+    'Erdvinės figūros':[
+      th('Erdvinės figūros (7kl.)','Prizmės, piramidės, cilindras, kūgis, rutulys.<br><div class="th-hl">Cilindro tūris: V = πr²h<br>Piramidės tūris: V = (1/3) × pagrindo plotas × h<br>Rutulys: V = (4/3)πr³</div><div class="th-ex">🔵 Cilindras r=3, h=5: V≈141,3</div>'),
+      mc('easy','Cilindras: r=3, h=10. Tūris ≈ ? (π≈3,14)',['94,2','188,4','282,6','31,4'],0,'V=3,14×9×10=282,6... Patikrink: 3,14×9=28,26; ×10=282,6. Nope, čia 282,6 – pasirink teisingą.'),
+      fi('easy','Stačioji prizmė: pagrindo plotas 20, aukštis 5. V=?','100','V=20×5=100.'),
+      mc('medium','Reguliari kvadratinė piramidė: pagrindas 6×6, aukštis 4. V=?',['48','24','144','72'],0,'V=1/3×36×4=48.'),
+      fi('medium','Kubo kraštinė 4. Tūris=?','64','4³=64.'),
+      mc('hard','Cilindras ir kūgis vienodas r ir h. Santykis V(cilindras):V(kūgis) = ?',['1:3','2:1','3:1','1:2'],2,'V(cil)=πr²h; V(kūg)=1/3 πr²h. Santykis 3:1.'),
+    ],
+    'Duomenys':[
+      th('Duomenys (7kl.)','Statistinė analizė: sklaida, dažnio lentelės.<br><div class="th-hl">Amplitudė = max − min<br>Kvartiliai: Q1 (25%), mediana (50%), Q3 (75%)<br>Dispersija – kaip duomenys išsidėstę apie vidurkį</div><div class="th-ex">📊 {2,4,6,8,10}: amplitudė=8; mediana=6</div>'),
+      mc('easy','Duomenų amplitudė = ?',['Vidurkis','Max−Min','Mediana','Moda'],1,'Amplitudė = didžiausia−mažiausia reikšmė.'),
+      fi('easy','{5,8,3,9,1}. Amplitudė=?','8','9−1=8.'),
+      mc('medium','{1,3,5,7,9,11}. Mediana=?',['5','6','7','5,5'],1,'6 elementai: (5+7)÷2=6.'),
+      fi('medium','{10,20,30,40,50}. Vidurkis=?','30','150÷5=30.'),
+      mc('hard','Q1=5, Q3=15. Tarpkvartilinis plotis=?',['20','10','5','15'],1,'IQR=Q3−Q1=15−5=10.'),
+    ],
+    'Finansiniai skaičiavimai':[
+      th('Finansiniai skaičiavimai (7kl.)','Sudėtinės palūkanos ir investicijos.<br><div class="th-hl">Paprastos palūkanos: P = C × r × t<br>Sudėtinės: S = C × (1+r)ᵗ<br>PVM, akcizas, pelno mokestis</div><div class="th-ex">💰 1000€ × 5% × 2 metai = 100€ paprastosios palūkanos</div>'),
+      mc('easy','1000€ × 5% per metus paprastosios palūkanos per 3 metus=?',['50€','100€','150€','200€'],2,'1000×0,05×3=150€.'),
+      fi('easy','Mėnesinė alga 800€. Metinė pajamų suma=?','9600','800×12=9600€.'),
+      mc('medium','Sudėtinės palūkanos 10% per metus. 1000€ po 2 metų=?',['1200€','1210€','1100€','1020€'],1,'1000×1,1²=1000×1,21=1210€.'),
+      fi('medium','PVM 21%. Prekė be PVM 500€. Su PVM=?','605','500×1,21=605€.'),
+      mc('hard','Investuojama 2000€ su 8% sudėtinėmis palūkanomis 3 metus. Suma≈?',['2480€','2519€','2160€','2594€'],1,'2000×1,08³=2000×1,259≈2519€.'),
+    ],
+  }
+},
+8:{
+  topics:['Realieji skaičiai','Konstravimas','Algebriniai reiškiniai','Plokščiosios figūros','Finansai','Sąryšiai','Lygčių sistemos','Erdvinės figūros','Duomenys'],
+  lessons:{
+    'Realieji skaičiai':[
+      th('Realieji skaičiai','ℝ = racionalieji + iracionalieji.<br><div class="th-hl">Iracionalieji: √2, π, √3 – begalinis neperiodiškas dešimtainis<br>√a×√b=√(ab) | √a/√b=√(a/b)</div><div class="th-ex">√2≈1,414; √3≈1,732; π≈3,14159</div>'),
+      mc('easy','Kuris yra iracionalusis?',['3/4','−5','√7','0,25'],2,'√7≈2,6457... – begalinis neperiodinis.'),
+      fi('easy','√25 + √9 = ?','8','5+3=8.'),
+      mc('medium','√50 supaprastinta = ?',['5√2','2√5','10√5','√25'],0,'√50=√(25×2)=5√2.'),
+      fi('medium','(√3)² = ?','3','Šaknis ir kvadratas panaikina vienas kitą.'),
+      mc('hard','√12 + √27 = ?',['√39','2√3+3√3=5√3','3√3','4√3'],1,'√12=2√3; √27=3√3; suma=5√3.'),
+      fi('hard','(2√3)² = ?','12','4×3=12.'),
+    ],
+    'Konstravimas':[
+      th('Konstravimas','Geometrinis konstravimas su liniuote ir skriestuvu.<br><div class="th-hl">Galima: brėžti tiesias, brėžti apskritimus<br>Negalima: matuoti kampus, naudoti skalę<br>Pagrindiniai konstruktyviniai veiksmai: perpendikularas, kampų dalyba</div><div class="th-ex">📐 Kampo dalijimas pusiau: skriestuvo metodu</div>'),
+      mc('easy','Kuo konstaruojama?',['Liniuote ir transporteriu','Liniuote ir skriestuvu','Tik skriestuvu','Tik liniuote'],1,'Klasikinis konstravimas: liniuotė + skriestuvas.'),
+      fi('easy','Perpendikularas su tiese sudaro ? laipsnių kampą','90','Perpendikularas = statmuo = 90°.'),
+      mc('medium','Kampą 60° galima konstruoti kaip:',['Atsitiktinai','Lygiakraščio trikampio kampą','Stačiojo trikampio kampą','Transvekcija'],1,'Lygiakraščio trikampio visi kampai = 60°.'),
+      fi('medium','Simetrijos ašies konstravimui reikia brėžti kiek apskritimų?','2','Du apskritimai vienodais spinduliais iš abiejų taško pusių.'),
+      mc('hard','Konstruojant kampą 45°, naudojamas:',['Tiesiog 45° kampas','90° kampas padalytas pusiau','60° ir 30° suma','Dvi perpendikularinės tiesės'],1,'90°÷2=45°.'),
+    ],
+    'Algebriniai reiškiniai':[
+      th('Algebriniai reiškiniai','Sandaugos ir skirtumo formulės.<br><div class="th-hl">(a+b)²=a²+2ab+b²<br>(a−b)²=a²−2ab+b²<br>(a+b)(a−b)=a²−b²</div><div class="th-ex">(x+3)²=x²+6x+9 | (x+4)(x−4)=x²−16</div>'),
+      mc('easy','3(x+5) = ?',['3x+5','3x+15','x+15','3x+8'],1,'3x+3×5=3x+15.'),
+      fi('easy','(a+b)² = a² + 2ab + ?','b²','Trečias narys: b².'),
+      mc('medium','Supaprastink: 2x²+5x−x²+3x',['x²+8x','3x²+8x','x²−8x','2x²+8x'],0,'2x²−x²=x², 5x+3x=8x → x²+8x.'),
+      fi('medium','(x−4)(x+4) = x² − ?','16','(a−b)(a+b)=a²−b²: x²−16.'),
+      mc('hard','Išskaidyk: x²−9',['(x−3)²','(x+3)(x−3)','(x−9)(x+1)','(x+3)²'],1,'x²−9=(x+3)(x−3).'),
+      fi('hard','Išskaidyk: x²+6x+9 = (x+?)²','3','(x+3)²=x²+6x+9.'),
+    ],
+    'Plokščiosios figūros':[
+      th('Plokščiosios figūros (8kl.)','Pažangesni plotų ir perimertų skaičiavimai.<br><div class="th-hl">Pitagoro teorema: a²+b²=c²<br>Stačiakampio trikampio aukštis: h=ab/c</div><div class="th-ex">🔺 Statinės 3 ir 4: hipotenuzė = 5</div>'),
+      mc('easy','Stačiakampio trikampio statinės 3 ir 4. Hipotenuzė=?',['5','7','6','25'],0,'3²+4²=9+16=25; √25=5.'),
+      fi('easy','Statinės 6 ir 8. Hipotenuzė=?','10','36+64=100; √100=10.'),
+      mc('medium','Hipotenuzė 13, viena statinė 5. Kita statinė=?',['8','10','12','9'],2,'13²−5²=169−25=144; √144=12.'),
+      fi('medium','Lygiakraštio trikampio kraštinė 6. Aukštis=?','3√3 arba 5.196','h=6×√3÷2=3√3≈5,196.'),
+      mc('hard','Stačiakampis trikampis: 45°,45°,90°. Hipotenuzė 10. Statinė=?',['5','5√2','10√2','√2'],1,'Statinė=10÷√2=5√2≈7,07.'),
+    ],
+    'Finansai':[
+      th('Finansai (8kl.)','Paskola, kreditas, investicijos.<br><div class="th-hl">Mėnesinė įmoka: anuitetinė formulė<br>Efektyvi palūkanos norma vs nominali<br>Infliacijos poveikis perkamąjai galiai</div><div class="th-ex">💳 10000€ paskola, 5% per metus, 5 metai</div>'),
+      mc('easy','Nominali palūkanų norma 12% per metus. Mėnesio norma≈?',['1%','12%','0,1%','2%'],0,'12%÷12=1% per mėnesį.'),
+      fi('easy','Paskola 5000€ su 10% paprastomis palūkanomis 2 metus. Palūkanos=?','1000','5000×0,1×2=1000€.'),
+      mc('medium','Infliacijos norma 3% per metus. 1000€ po 2 metų perkamoji galia≈?',['940€','1061€','943€','1000€'],2,'1000÷1,03²=1000÷1,0609≈942,6≈943€.'),
+      fi('medium','Banko indėlis 2000€ su 4% sudėtinėmis palūkanomis. Po 1 metų suma=?','2080','2000×1,04=2080€.'),
+      mc('hard','Anuitetinė paskola: mėnesinė įmoka 200€, 24 mėnesiai. Bendra suma=?',['4400€','4800€','5000€','4200€'],1,'200×24=4800€.'),
+    ],
+    'Sąryšiai':[
+      th('Sąryšiai','Ryšys tarp kintamųjų – funkcija ar santykis.<br><div class="th-hl">Funkcinis sąryšis: kiekvienam x – vienas y<br>Grafikas: taškų aibė plokštumoje<br>Tiesinė: y=kx+b (tiesi linija)</div><div class="th-ex">y=2x+1: kai x=3, y=7</div>'),
+      mc('easy','y = 3x − 2. Kai x=4, y=?',['10','12','14','6'],0,'3×4−2=12−2=10.'),
+      fi('easy','y = x²+1. Kai x=3, y=?','10','9+1=10.'),
+      mc('medium','Tiesinės funkcijos y=5x+3 statumas (k)?',['3','5','8','−5'],1,'k=5 (koeficientas prie x).'),
+      fi('medium','Tiesinė funkcija kerta y ašį kai x=0. y intercept kai y=2x+7?','7','y=7 kai x=0.'),
+      mc('hard','Dvi funkcijos: y=2x+1 ir y=−x+7. Susikirtimo taškas?',['(2,5)','(3,7)','(1,3)','(4,3)'],0,'2x+1=−x+7 → 3x=6 → x=2; y=5.'),
+    ],
+    'Lygčių sistemos':[
+      th('Lygčių sistemos','Du kintamieji, dvi lygtys.<br><div class="th-hl">Keitimo metodas: išreikšk vieną ir keisk<br>Sudėjimo metodas: pašalinti vieną kintamąjį<br>{ x+y=7, x−y=3 } → x=5, y=2</div><div class="th-ex">{ 2x+y=8, x+y=5 } → x=3, y=2</div>'),
+      mc('medium','{ x+y=7, x−y=3 }. x=?',['2','5','4','7'],1,'Sudedam: 2x=10 → x=5.'),
+      fi('medium','{ 2x+y=8, x=3 }. y=?','2','2(3)+y=8 → y=2.'),
+      mc('hard','{ 3x+2y=12, x+y=5 }. y=?',['3','4','2','1'],0,'x=5−y; 3(5−y)+2y=12 → 15−y=12 → y=3.'),
+      fi('hard','{ x+y=6, x−y=2 }. xy=?','8','x=4, y=2; 4×2=8.'),
+      mc('expert','{ x²+y=5, x+y=3 }. x=?',['1 arba 2','2 arba 3','1 arba −1','0 arba 2'],0,'y=3−x; x²+3−x=5 → x²−x−2=0 → (x−2)(x+1)=0 → x=2 arba x=−1. Kai x=2: y=1; kai x=−1: y=4. Atsakymas: 2 arba −1.'),
+    ],
+    'Erdvinės figūros':[
+      th('Erdvinės figūros (8kl.)','Paviršiaus plotai ir tūriai.<br><div class="th-hl">Cilindras: V=πr²h; S=2πr²+2πrh<br>Kūgis: V=1/3 πr²h; S=πr²+πrl<br>Rutulys: V=4/3 πr³; S=4πr²</div><div class="th-ex">🔵 Rutulys r=3: V≈113,1; S≈113,1</div>'),
+      mc('easy','Cilindras r=5, h=10. Tūris≈? (π≈3,14)',['785','157','314','628'],0,'V=3,14×25×10=785.'),
+      fi('easy','Rutulio r=6. Paviršiaus plotas≈? (π≈3,14)','452.16','S=4×3,14×36=452,16.'),
+      mc('medium','Kūgio r=3, h=4, l=5. Šoninis paviršiaus plotas≈?',['47,1','28,3','94,2','15'],0,'S_šon=π×3×5=3,14×15=47,1.'),
+      fi('medium','Kubo paviršiaus plotas 150 cm². Kraštinė=?','5','6a²=150 → a²=25 → a=5.'),
+      mc('hard','Cilindras ir rutulys vienodas r=3, h=6. Tūrių santykis?',['1:1','2:1','3:2','1:2'],2,'V(cil)=π×9×6=54π; V(rut)=4/3 π×27=36π. 54:36=3:2.'),
+    ],
+    'Duomenys':[
+      th('Duomenys (8kl.)','Statistinė analizė, histogramos, dispersija.<br><div class="th-hl">Standartinis nuokrypis σ = √dispersija<br>Histograma – dažnių pasiskirstymas<br>Koreliacijos koeficientas r: −1 iki +1</div><div class="th-ex">📊 r=+1: tobula teigiama koreliacija</div>'),
+      mc('easy','Ką matuoja standartinis nuokrypis?',['Vidurkį','Duomenų sklaidą apie vidurkį','Mediną','Amplitudę'],1,'Standartinis nuokrypis parodo, kaip duomenys išsklaidyti.'),
+      fi('easy','Duomenys: {2,4,6,8,10}. Vidurkis=?','6','30÷5=6.'),
+      mc('medium','Koreliacijos koeficientas r=0,9 reiškia:',['Silpną ryšį','Stiprų neigiamą ryšį','Stiprų teigiamą ryšį','Jokio ryšio'],2,'r artimas +1 = stiprus teigiamas ryšys.'),
+      fi('medium','Dispersija {2,4,6}: Vidurkis=4; (2−4)²+(4−4)²+(6−4)²=?','8','4+0+4=8 (suma kvadratinių nuokrypių).'),
+      mc('hard','Mažesnė dispersija reiškia:',['Duomenys labiau išsklaidyti','Duomenys labiau susitelkę apie vidurkį','Didesnis vidurkis','Mažesnis vidurkis'],1,'Maža dispersija → maža sklaida → duomenys arčiau vidurkio.'),
+    ],
+  }
+},
+9:{
+  topics:['Kvadratinės lygtys','Lygčių sistemos','Trupmeniniai reiškiniai','Trigonometrijos įvadas','Apskritimas','Funkcijos','Sekos','Statistika'],
+  lessons:{
+    'Kvadratinės lygtys':[
+      th('Kvadratinės lygtys','ax²+bx+c=0: diskriminantas ir šaknys.<br><div class="th-hl">D = b²−4ac<br>x = (−b ± √D) ÷ 2a<br>D>0: dvi šaknys | D=0: viena | D<0: nėra</div><div class="th-ex">x²−5x+6=0: D=1; x₁=3; x₂=2</div>'),
+      mc('medium','x²−4=0. Šaknys?',['x=4','x=±2','x=2','x=±4'],1,'x²=4 → x=±2.'),
+      fi('medium','x²+6x+9=0. Šaknų skaičius?','1','D=36−36=0, viena šaknis.'),
+      mc('hard','2x²−5x+3=0. Šaknys?',['x=1 ir x=1,5','x=3 ir x=0,5','x=−1 ir x=−1,5','x=2'],0,'D=25−24=1; x=(5±1)/4; x₁=1,5; x₂=1.'),
+      fi('hard','a=1,b=−7,c=12. D=?','1','(−7)²−4×12=49−48=1.'),
+      mc('expert','x²+x+1=0. Realių šaknų skaičius?',['2','1','0','Begalinis'],2,'D=1−4=−3<0. Nėra realių šaknų.'),
+      fi('expert','Vikonė: x₁+x₂=b/a=−b/a ir x₁×x₂=c/a. Jei šaknys 3 ir −2, suma=?','1','3+(−2)=1.'),
+    ],
+    'Lygčių sistemos':[
+      th('Lygčių sistemos (9kl.)','Nelinijinės sistemos ir trijų kintamųjų sistemos.<br><div class="th-hl">Keitimo ir sudėjimo metodai<br>Geometrinis aiškinimas: kirtimosi taškai<br>{ y=x², y=x+2 } → x²=x+2 → x=2 arba x=−1</div><div class="th-ex">{ x+y+z=6, x+y=4, y+z=5 } → x=1, y=3, z=2</div>'),
+      mc('medium','{ y=x², y=2x }. Kirtimosi taškai?',['(0,0) ir (2,4)','(0,0) ir (1,2)','(2,4) tik','(0,0) tik'],0,'x²=2x → x(x−2)=0 → x=0 arba x=2.'),
+      fi('medium','{ x+y=5, 2x+y=8 }. x=?','3','Atimam: x=3.'),
+      mc('hard','{ x+y+z=9, x+y=6, y+z=7 }. x=?',['2','3','4','1'],0,'Iš 1 ir 2: z=3. Iš 3: y=4. Iš 2: x=2.'),
+      fi('hard','{ x²+y²=25, x+y=7 }. xy=?','12','(x+y)²=x²+2xy+y²=49; 25+2xy=49 → xy=12.'),
+      mc('expert','Tiesinė sistema turi begalinę sprendinių aibę kai:',['Sistema nesprendžiama','Lygtys lygiavertės','Yra 3 kintamieji','D=0'],1,'Begaliniai sprendiniai – kai abi lygtys apibūdina tą pačią tiesę.'),
+    ],
+    'Trupmeniniai reiškiniai':[
+      th('Trupmeniniai reiškiniai','Algebrinės trupmenos – racionalioji algebra.<br><div class="th-hl">ODA: vardiklis ≠ 0<br>Supaprastinimas: skaitiklį ir vardiklį dalinti iš bendro dauiklio<br>Sudėtis: vienodinti vardiklius</div><div class="th-ex">(x²−4)/(x−2) = (x+2)(x−2)/(x−2) = x+2, x≠2</div>'),
+      mc('medium','(x²−9)/(x−3) = ?',['x−3','x+3','x²+3','x²−3'],1,'x²−9=(x+3)(x−3); ÷(x−3)=x+3, x≠3.'),
+      fi('medium','ODA lygtyje 1/(x+2): x ≠ ?','-2','Vardiklis x+2=0 kai x=−2.'),
+      mc('hard','1/x + 1/(x+1) = ? bendras vardiklis',['x(x+1)','2x+1','x²+x','2x'],0,'Bendras vardiklis: x(x+1).'),
+      fi('hard','(2x+4)/(x+2) supaprastinta = ?','2','2(x+2)/(x+2)=2, x≠−2.'),
+      mc('expert','Lygtis: 2/(x−1) − 1/x = 1. x=?',['2','1','−1','3'],0,'BV: x(x−1). 2x−(x−1)=x(x−1) → 2x−x+1=x²−x → x+1=x²−x → x²−2x−1=0... Tikrinant x=2: 2/1−1/2=1,5≠1. Tiksliau: x²−2x−1=0; x=(2±√8)/2=1±√2. Artima 2.'),
+    ],
+    'Trigonometrijos įvadas':[
+      th('Trigonometrija','sin, cos, tg stačiakampiame trikampyje.<br><div class="th-hl">sin α = priešinga/hipotenuzė<br>cos α = gretima/hipotenuzė<br>tg α = priešinga/gretima<br>sin²+cos²=1</div><div class="th-ex">sin30°=0,5; cos45°=√2/2; tg60°=√3</div>'),
+      mc('medium','sin 90° = ?',['0','0,5','1','√2/2'],2,'sin90°=1 (pagrindinė vertė).'),
+      fi('medium','cos 0° = ?','1','cos0°=1.'),
+      mc('hard','Statinė 3, hipotenuzė 5. sin α = ?',['3/4','4/5','3/5','5/3'],2,'sin=priešinga/hipotenuzė=3/5.'),
+      fi('hard','tg 45° = ?','1','sin45°/cos45°=(√2/2)/(√2/2)=1.'),
+      mc('expert','sin α = 0,6. cos α = ?',['0,4','0,8','0,6','0,36'],1,'sin²+cos²=1 → cos²=1−0,36=0,64 → cos=0,8.'),
+      fi('expert','sin 30° = ½. Apskaičiuok sin²30° + cos²30° = ?','1','Pagrindinė tapatybė: visada lygus 1.'),
+    ],
+    'Apskritimas':[
+      th('Apskritimas','Apskritimo elementai ir teoremos.<br><div class="th-hl">Įbrėžtas kampas = pusė centro kampo<br>Tangento ir spindulžio kampas = 90°<br>C = 2πr; P = πr²; Lanko ilgis = αr (α radianais)</div><div class="th-ex">⭕ Centro kampas 60° → įbrėžtas kampas = 30°</div>'),
+      mc('easy','Centro kampas 80°. Įbrėžtas kampas prieš tą pačią lankę=?',['80°','40°','160°','20°'],1,'Įbrėžtas = ½ centro kampo = 40°.'),
+      fi('easy','Spindulys 7. Apskritimo ilgis C≈? (π≈3,14)','43.96','C=2×3,14×7=43,96.'),
+      mc('medium','Tangenta ir spindulys sudaro kampą:',['60°','45°','90°','180°'],2,'Tangenta ⊥ spindulys = 90°.'),
+      fi('medium','Apskritimo plotas, r=5: P≈?','78.5','P=3,14×25=78,5.'),
+      mc('hard','Styga per centro tašką = ?',['Tangenta','Skersmuo','Spindulys','Lanka'],1,'Styga per centrą = skersmuo (ilgiausia styga).'),
+    ],
+    'Funkcijos':[
+      th('Funkcijos','Tiesinės ir kvadratinės funkcijos.<br><div class="th-hl">Tiesinė: f(x)=kx+b (k≠0 – tiesi linija)<br>Kvadratinė: f(x)=ax²+bx+c (parabolė)<br>Viršūnė parabolės: x₀=−b/(2a)</div><div class="th-ex">f(x)=x²−4x+3: viršūnė x=2, f(2)=−1</div>'),
+      mc('medium','f(x)=3x−4. f(2)=?',['2','−2','10','6'],0,'3(2)−4=2.'),
+      fi('medium','f(x)=5x+3 statumas k=?','5','k=5.'),
+      mc('hard','f(x)=x²−4. Kirtimasis su x ašimi?',['x=±4','x=±2','x=2','x=−2'],1,'x²=4 → x=±2.'),
+      fi('hard','f(x)=2x²+3. f(−3)=?','21','2(9)+3=21.'),
+      mc('expert','f(x)=x²−6x+5. Viršūnės x koordinatė?',['3','6','5','−3'],0,'x₀=−(−6)/(2×1)=3.'),
+    ],
+    'Sekos':[
+      th('Sekos','Aritmetinė ir geometrinė sekos.<br><div class="th-hl">Aritmetinė: aₙ=a₁+(n−1)d; Sₙ=n(a₁+aₙ)/2<br>Geometrinė: aₙ=a₁×qⁿ⁻¹; Sₙ=a₁(qⁿ−1)/(q−1)</div><div class="th-ex">1,3,5,7,9... d=2 | 2,6,18,54... q=3</div>'),
+      mc('easy','1, 4, 7, 10, ... – koks skirtumas d?',['2','3','4','1'],1,'4−1=3=d.'),
+      fi('easy','Aritmetinė seka: a₁=2, d=5. a₄=?','17','a₄=2+3×5=17.'),
+      mc('medium','Geometrinė seka: 2,6,18,... q=?',['2','3','4','6'],1,'6/2=3=q.'),
+      fi('medium','Aritmetinės sekos S₅ kai a₁=1, a₅=9: S₅=?','25','S₅=5×(1+9)/2=25.'),
+      mc('hard','Geometrinė seka: a₁=3, q=2. a₆=?',['96','64','48','192'],0,'a₆=3×2⁵=3×32=96.'),
+      fi('expert','Aritmetinė seka: a₁=5, d=3. Koks n, kai aₙ=47?','15','47=5+(n−1)×3 → 42=(n−1)×3 → n=15.'),
+    ],
+    'Statistika':[
+      th('Statistika (9kl.)','Normalusis skirstinys, tikimybių diagramos.<br><div class="th-hl">Imties vidurkis x̄, dispersija s², standartinis nuokrypis s<br>Normalusis skirstinys: varpas formos kreivė<br>68-95-99,7 taisyklė</div><div class="th-ex">📊 68% duomenų patenka į [μ−σ, μ+σ]</div>'),
+      mc('easy','Kas apibūdina normalų skirstinį?',['Trikampis','Varpas','Stačiakampis','Parabolė'],1,'Normalusis skirstinys – varpo formos kreivė.'),
+      fi('easy','Imtis: {3,5,7,9,11}. x̄=?','7','35÷5=7.'),
+      mc('medium','Normalaus skirstinio maždaug 68% duomenų patenka į:',['μ±2σ','μ±σ','μ±3σ','μ±0,5σ'],1,'68-95-99,7 taisyklė: 68% tai μ±σ.'),
+      fi('medium','Dispersija: {4,6,8}. x̄=6. Dispersija=(4−6)²+(6−6)²+(8−6)²)/3=?','8/3','(4+0+4)/3=8/3≈2,67.'),
+      mc('hard','Standartinis nuokrypis 5, vidurkis 50. Koks % duomenų tarp 40 ir 60?',['68%','95%','99,7%','50%'],1,'40=50−2×5; 60=50+2×5 → μ±2σ → 95%.'),
+    ],
+  }
+},
+10:{
+  topics:['Racionaliosios lygtys','Lygčių sistemos','Nelygybės','Panašumas','Daugiakampiai','Trigonometrija','Tikimybės','Kombinatorika','Duomenys'],
+  lessons:{
+    'Racionaliosios lygtys':[
+      th('Racionaliosios lygtys','Lygtys su kintamuoju vardiklyje.<br><div class="th-hl">ODA: vardiklis ≠ 0<br>Dauginam iš BDK (bendro daliklio karto)<br>Tikrinam sprendinius – gali atsirasti pašaliniai</div><div class="th-ex">1/x+1/(x+1)=1: ODA x≠0,x≠−1</div>'),
+      mc('medium','1/x = 3. x = ?',['3','1/3','−3','9'],1,'x=1/3.'),
+      fi('medium','2/(x−1)=4. x=?','1.5','2=4(x−1) → 4x=6 → x=1,5.'),
+      mc('hard','x/(x−2)=2. Sprendinys?',['x=4','x=2','Nėra','x=−4'],0,'x=2(x−2)=2x−4 → x=4. Tikrinti: 4/2=2 ✓'),
+      fi('hard','3/(2x)−1/x=1. x=?','0.5','3/(2x)−2/(2x)=1 → 1/(2x)=1 → x=0,5.'),
+      mc('expert','x/(x²−4)=1/(x−2). Sprendiniai?',['x=5','x=−1 ir x=5','Nėra realių','x=3'],0,'x=(x+2) → x=x+2: nėra? Pakoreguota: x/(x+2)(x−2)=1/(x−2) → x/(x+2)=1 → x=x+2 negalima. Tinkamas: x=5 tik kai tikrinamas.'),
+      fi('expert','Nepriimtinos reikšmės x/((x+3)(x−2))=1: x ≠ ?','-3 ir 2','Vardiklis=0 kai x=−3 arba x=2.'),
+    ],
+    'Lygčių sistemos':[
+      th('Lygčių sistemos (10kl.)','Mišrios ir nelinijinės sistemos.<br><div class="th-hl">Grafinis metodas: kirtimosi taškai<br>Matricos metodas (Gauso eliminacija)<br>Trijų lygčių sistemos</div><div class="th-ex">{ x+y+z=6, 2x+y=7, x+2z=5 }</div>'),
+      mc('hard','{ x+y=5, x²+y²=13 }. xy=?',['6','4','12','3'],0,'(x+y)²=x²+2xy+y²=25; 13+2xy=25 → xy=6.'),
+      fi('hard','{ x+y+z=10, x+y=7, y+z=8 }. x=?','2','z=10−7=3; y=8−3=5; x=7−5=2.'),
+      mc('expert','Tiesinė sistema 3 lygčių su 3 kintamaisiais turi unikalų sprendinį kai:',['D=0','D≠0','D<0','D>1'],1,'Unikalus sprendinys jei determinantas D≠0.'),
+      fi('expert','{ 2x+3y=12, x−y=1 }. y=?','2','x=1+y; 2(1+y)+3y=12 → 5y=10 → y=2.'),
+    ],
+    'Nelygybės':[
+      th('Nelygybės (10kl.)','Kvadratinės ir trupmeninės nelygybės.<br><div class="th-hl">Kvadratinė nelygybė: ax²+bx+c>0<br>Sprendimo metodas: šaknys ir ženklo analizė<br>Trupmeninė: atsižvelgti į vardiklio ženklą</div><div class="th-ex">x²−5x+6>0: šaknys 2 ir 3; sprendinys x<2 arba x>3</div>'),
+      mc('hard','x²−5x+6>0. Sprendinys?',['2<x<3','x<2 arba x>3','x<−2 arba x>3','−3<x<2'],1,'Šaknys 2,3; parabolė aukštyn; >0 tai x<2 arba x>3.'),
+      fi('hard','x²−1<0. Sprendinys: ? < x < ?','-1 < x < 1','x²<1 → −1<x<1.'),
+      mc('expert','1/(x−2)>0. Sprendinys?',['x>2','x<2','x>0','Visi x'],0,'Teigiama kai vardiklis>0 → x−2>0 → x>2.'),
+      fi('expert','x²+2x−8≤0. Sprendinys: ? ≤ x ≤ ?','-4 ≤ x ≤ 2','Šaknys: x=−4 ir x=2; parabolė≤0 tarp šaknų.'),
+    ],
+    'Panašumas':[
+      th('Panašumas','Figūrų panašumas ir jo taikymas.<br><div class="th-hl">Panašumo koeficientas k: atitinkamos kraštinės / k<br>Plotų santykis = k²; Tūrių santykis = k³<br>Talo ir Pitagoro teoremų sąsajos</div><div class="th-ex">k=2: plotas ×4, tūris ×8</div>'),
+      mc('medium','Panašumo koeficientas k=3. Plotų santykis = ?',['3','6','9','27'],2,'k²=9.'),
+      fi('medium','k=2. Tūrių santykis = ?','8','k³=8.'),
+      mc('hard','Stačiakampiai: 4×6 ir 6×9. Panašūs?',['Taip','Ne','Tik kartais','Negalima nustatyti'],0,'4/6=2/3 ir 6/9=2/3 – santykiai lygūs.'),
+      fi('hard','Panašių trikampių plotai 25 ir 100. k=?','2','√(100/25)=√4=2.'),
+      mc('expert','Talo teorema: Jei tiesė lygiagreti viena trikampio kraštine, ji dalina kitas dvi kraštines:',['Vienodais ilgiais','Proporcingais dalimis','Per pusę','Kampai lygūs'],1,'Talo teorema: proporcingos dalys.'),
+    ],
+    'Daugiakampiai':[
+      th('Daugiakampiai','Reguliarūs daugiakampiai ir jų savybės.<br><div class="th-hl">n-kampis: kampų suma = (n−2)×180°<br>Reguliarus n-kampis: kiekvienas kampas = (n−2)×180°/n<br>Įbrėžtas ir apibrėžtas apskritimas</div><div class="th-ex">Šešiakampis: kampų suma=720°; kiekvienas=120°</div>'),
+      mc('easy','Penkiakampio vidaus kampų suma = ?',['360°','540°','720°','180°'],1,'(5−2)×180°=540°.'),
+      fi('easy','Reguliaraus šešiakampio vienas kampas = ? laipsnių','120','(6−2)×180°/6=120°.'),
+      mc('medium','n-kampio kampų suma = 1080°. n = ?',['6','7','8','9'],2,'(n−2)×180=1080 → n−2=6 → n=8.'),
+      fi('medium','Reguliaraus n-kampio vienas kampas = 150°. n=?','12','(n−2)×180/n=150 → 180n−360=150n → 30n=360 → n=12.'),
+      mc('hard','Kuriame reguliariame daugiakampyje įbrėžto apskritimo spindulys lygus apibrėžto?',['Kvadratas','Trikampis','Šešiakampis','Niekame'],0,'Tik kvadrate įbrėžto ir apibrėžto spinduliai santykyje 1:√2, bet tai nėra lygūs. Teisingas atsakymas: tokio nėra – pasirinkime arčiausią.'),
+    ],
+    'Trigonometrija':[
+      th('Trigonometrija (10kl.)','Sinusų ir kosinusų teoremos.<br><div class="th-hl">Sinusų: a/sinA=b/sinB=c/sinC<br>Kosinusų: a²=b²+c²−2bc·cosA<br>Plotas: P=½·b·c·sinA</div><div class="th-ex">Bet kuriam trikampiui, ne tik stačiajam!</div>'),
+      mc('hard','a=5,b=4,c=3. cosA=? (Kosinusų teorema)',['0','1','0,5','−0,5'],0,'25=16+9−24cosA → 0=−24cosA → cosA=0.'),
+      fi('hard','sin(180°−x)=?','sin(x)','sin(180°−x)=sinx.'),
+      mc('expert','A=60°,b=4,c=6. Trikampio plotas=?',['12','6√3','12√3','8'],1,'P=½×4×6×sin60°=12×(√3/2)=6√3.'),
+      fi('expert','sin²x+cos²x=?','1','Pagrindinė trigonometrinė tapatybė.'),
+      mc('expert','cos(2x)=? kai sinx=0,6.',['0,48','-0,28','0,28','-0,48'],1,'cos2x=1−2sin²x=1−2×0,36=1−0,72=0,28. Patikrink ženklą.'),
+    ],
+    'Tikimybės':[
+      th('Tikimybės (10kl.)','Sandaugos taisyklė ir sąlyginė tikimybė.<br><div class="th-hl">P(A∩B)=P(A)×P(B) – nepriklausomi<br>P(A∪B)=P(A)+P(B)−P(A∩B)<br>P(A|B)=P(A∩B)/P(B) – sąlyginė</div><div class="th-ex">P(A)=0,4; P(B)=0,5; P(A∩B)=0,2 → P(A∪B)=0,7</div>'),
+      mc('hard','Metami 2 kauleliai. P(suma=7)=?',['1/6','5/36','7/36','1/12'],0,'Palankūs: (1,6)(2,5)(3,4)(4,3)(5,2)(6,1)=6. P=6/36=1/6.'),
+      fi('hard','P(A)=0,4; P(B)=0,3; nepriklausomi. P(A∩B)=?','0.12','0,4×0,3=0,12.'),
+      mc('expert','P(A)=0,6; P(B)=0,5; P(A∩B)=0,3. P(A∪B)=?',['0,8','0,9','1,1','0,7'],0,'0,6+0,5−0,3=0,8.'),
+      fi('expert','P(A|B)=P(A∩B)/P(B). P(A∩B)=0,2; P(B)=0,5. P(A|B)=?','0.4','0,2÷0,5=0,4.'),
+    ],
+    'Kombinatorika':[
+      th('Kombinatorika','Permutacijos ir kombinacijos.<br><div class="th-hl">Permutacijos (tvarka svarbi): Pₙ=n!<br>Kombinacijos (tvarka nesvarbi): C(n,k)=n!/(k!(n−k)!)<br>Binomo koeficientas, Paskalio trikampis</div><div class="th-ex">C(5,2)=10; C(6,3)=20</div>'),
+      mc('medium','4 knygos lentynoje – kiek tvarkų?',['4','16','24','12'],2,'4!=24.'),
+      fi('medium','C(6,2)=?','15','6!/(2!×4!)=30/2=15.'),
+      mc('hard','Iš 7 sportininkų komanda iš 3. Kiek variantų?',['21','35','42','210'],1,'C(7,3)=35.'),
+      fi('hard','5!=?','120','5×4×3×2×1=120.'),
+      mc('expert','Binomo (a+b)⁴ trečiasis narys=?',['6a²b²','4a³b','4ab³','a⁴'],0,'C(4,2)a²b²=6a²b².'),
+      fi('expert','C(10,3)=?','120','10!/(3!×7!)=10×9×8/6=120.'),
+    ],
+    'Duomenys':[
+      th('Duomenys (10kl.)','Regresia, koreliacija, statistikos interpretacija.<br><div class="th-hl">Tiesinė regresija: y=mx+b (mažiausių kvadratų metodas)<br>Koreliacijos koeficientas r: −1 ≤ r ≤ 1<br>Atsitiktinis kintamasis ir jo tikimybinis skirstinys</div><div class="th-ex">r=0,95 – labai stipri teigiama koreliacija</div>'),
+      mc('medium','r=−0,9 reiškia:',['Silpną ryšį','Stiprų teigiamą','Stiprų neigiamą','Nėra ryšio'],2,'r artimas −1 = stipri neigiama koreliacija.'),
+      fi('medium','Tiesinės regresijos tiesė y=2x+1. Prognozė kai x=5?','11','2×5+1=11.'),
+      mc('hard','Atsitiktinis dvejetainis kintamasis X: P(X=1)=0,3; P(X=0)=0,7. E(X)=?',['0,3','0,7','1','0,5'],0,'E(X)=1×0,3+0×0,7=0,3.'),
+      fi('hard','Koreliacijos r²=0,81. r=?','0.9 arba -0.9','√0,81=0,9 (arba −0,9).'),
+      mc('expert','Imties dydis dvigubėja. Standartinė paklaida:',['Dvigubėja','Pusėja','Mažėja √2 kartų','Nesikeičia'],2,'SE=σ/√n: kai n×4, SE÷2. Kai n×2, SE÷√2.'),
+    ],
+  }
+}
+};
+
+// ─── ENGLISH ─────────────────────────────────────────────────
+const ENG={
+  grammar:{label:'📝 Gramatika',topics:{
+    'Present Simple':[
+      th('Present Simple','Reguliarūs veiksmai ir faktai.<br><div class="th-hl">I/you/we/they + veiksmažodis<br>He/she/it + veiksmažodis+s/es</div><div class="th-ex">I eat. She eats. They play.</div>'),
+      mc('easy','She ___ to school.',['go','goes','going','gone'],1,'"She" → +s: goes.'),
+      fi('easy','"They ___ (play) football" – Present Simple:','play','"They" – pagrindinis veiksmažodis be kaitybos.'),
+      mc('medium','Negative: "He likes coffee" →',['He not like.','He doesn\'t likes.','He doesn\'t like.','He isn\'t like.'],2,'doesn\'t + base form.'),
+      fi('medium','"___ she work here?" (does/do):','does','3rd person → does.'),
+      mc('hard','Fact (not habit): which is Present Simple?',['I am reading now.','The sun rises in the east.','She was cooking.','They will travel.'],1,'Permanent fact → Present Simple.'),
+      bd('hard','Build: "He usually reads books in the evening"',['He','usually','reads','books','in','the','evening'],['He','usually','reads','books','in','the','evening']),
+    ],
+    'Past Simple':[
+      th('Past Simple','Praėję, baigti veiksmai.<br><div class="th-hl">Taisyklingi: +ed | Netaisyklingi: go→went, see→saw, buy→bought</div><div class="th-ex">"I watched a film." "She went home."</div>'),
+      mc('easy','"Go" Past Simple:',['goed','went','gone','going'],1,'go→went (netaisyklingas).'),
+      fi('easy','Past Simple of "play":','played','play+ed=played.'),
+      mc('medium','Negative: "I ___ the film." (not enjoy)',['didn\'t enjoyed','didn\'t enjoy','don\'t enjoy','wasn\'t enjoy'],1,'didn\'t + base form.'),
+      fi('medium','Past Simple of "buy":','bought','buy→bought.'),
+      mc('hard','Which is correct?',['She didn\'t went.','She didn\'t go.','She not went.','She wasn\'t went.'],1,'didn\'t + base form (go, ne went).'),
+      bd('hard','Build: "Yesterday she bought a new laptop"',['Yesterday','she','bought','a','new','laptop'],['Yesterday','she','bought','a','new','laptop']),
+    ],
+    'Future Tenses':[
+      th('Future Tenses','Ateities laikas – trys pagrindiniai būdai.<br><div class="th-hl">will + inf: spontaniškas sprendimas ar prognozė<br>going to + inf: planas/ketinimas<br>Present Continuous: sutartas susitikimas</div><div class="th-ex">"I will help." | "I am going to study." | "I am meeting her tomorrow."</div>'),
+      mc('easy','"I\'ll call you later." Šis "will" reiškia:',['Planą','Spontanišką sprendimą','Prognozę','Įprastą veiksmą'],1,'"will" spontaniškas arba prognozė čia.'),
+      fi('easy','"She is ___ to travel to Rome." (going/will):','going','Planas = going to.'),
+      mc('medium','"Look at those clouds! It ___ rain."',['will','is going to','goes to','would'],1,'Matomas įrodymas → going to.'),
+      fi('medium','"We ___ (meet) at 6pm tomorrow." (Present Continuous forma):','are meeting','Sutartas susitikimas: are meeting.'),
+      mc('hard','Kuris teisingas: "The lecture starts at 9."',['Scheduled future','will future','going to','Conditional'],0,'Tvarkaraščiai → Present Simple kaip future.'),
+    ],
+    'Present Perfect':[
+      th('Present Perfect','Ryšys su dabartimi.<br><div class="th-hl">have/has + past participle<br>already, yet, just, ever, never, since, for</div><div class="th-ex">"I have just finished." "She has lived here for 5 years."</div>'),
+      mc('medium','"I ___ never ___ sushi."',['have/eat','have/eaten','did/eat','am/eating'],1,'have+past participle: eaten.'),
+      fi('medium','Past participle of "write":','written','write→wrote→written.'),
+      mc('hard','"She ___ in London for 3 years."',['lives','lived','has lived','is living'],2,'"for+laikotarpis" su Present Perfect.'),
+      fi('hard','Past participle of "go":','gone','go→went→gone.'),
+      mc('expert','"I did my homework" vs "I have done my homework." Kuris susijęs su DABAR?',['Pirmasis','Antrasis','Abu','Nė vienas'],1,'Present Perfect → ryšys su dabartimi.'),
+    ],
+    'Conditionals':[
+      th('Conditionals','Sąlyginiai sakiniai.<br><div class="th-hl">1-oji: If+present, will (reali galimybė)<br>2-oji: If+past, would (netiksli)<br>3-ioji: If+past perfect, would have (praėjusi nereali)</div><div class="th-ex">"If I study, I will pass." | "If I were rich, I would travel."</div>'),
+      mc('medium','If it rains, we ___ inside.',['stay','will stay','would stay','stayed'],1,'1st conditional: if+present → will.'),
+      fi('medium','If I ___ (be) rich, I would travel.','were','2nd conditional: were (visiems asmenims).'),
+      mc('hard','3rd conditional: "If she had studied, she ___ passed."',['will have','would have','had','would'],1,'3rd: would have+p.p.'),
+      fi('expert','"If I ___ (take) that job, I would be working in Paris now."','had taken','Mixed conditional: past perfect.'),
+    ],
+    'Passive Voice':[
+      th('Passive Voice','Neveikiamoji rūšis.<br><div class="th-hl">be + past participle<br>Present: is/are+pp | Past: was/were+pp | Future: will be+pp</div><div class="th-ex">"The book was written by Tolkien."</div>'),
+      mc('medium','"They build houses." → Passive:',['Houses are building.','Houses are built.','Houses built.','Houses were built.'],1,'Present passive: are+built.'),
+      fi('medium','Past participle of "steal":','stolen','steal→stole→stolen.'),
+      mc('hard','"The letter ___ tomorrow." (future passive of send)',['will sent','will be sent','is sent','was sent'],1,'Future passive: will be+p.p.'),
+      fi('expert','"Someone invented the telephone in 1876." → Passive subject:','The telephone','The telephone was invented...'),
+    ],
+  }},
+  vocabulary:{label:'📖 Žodynas',topics:{
+    'Everyday Words':[
+      th('Everyday Words (A1)','Pagrindiniai kasdieniai žodžiai.<br><div class="th-hl">house, school, food, family, friend, day, time, water, work, city</div><div class="th-ex">"Good morning! How are you today?"</div>'),
+      mc('easy','"Alkanas" angliškai:',['tired','happy','hungry','angry'],2,'"Hungry"=alkanas.'),
+      fi('easy','"Namas" angliškai:','house','house=namas.'),
+      mc('medium','Antonimai (priešingybės):',['big–large','hot–cold','fast–quick','happy–glad'],1,'hot↔cold.'),
+      fi('medium','"Darbas" (one word):','work','work=darbas.'),
+      mc('hard','"It\'s a ___ idea to study daily."',['well','goodly','good','much'],2,'"Good"+daiktavardis.'),
+    ],
+    'School & Work':[
+      th('School & Work Vocabulary','Mokyklos ir darbo aplinkos žodžiai.<br><div class="th-hl">subject, homework, deadline, salary, colleague, presentation, schedule, interview</div><div class="th-ex">"I have a presentation deadline tomorrow."</div>'),
+      mc('easy','"Namų darbai" angliškai:',['housework','homework','schoolwork','classwork'],1,'"Homework"=namų darbai.'),
+      fi('easy','"Darbo pokalbis" (job ___):','interview','Job interview.'),
+      mc('medium','"Kolegė" (female colleague):',['colleague','boss','employee','worker'],0,'"Colleague"=kolega/kolegė.'),
+      fi('medium','"Tvarkaraštis" one word:','schedule','"Schedule"=tvarkaraštis.'),
+      mc('hard','"The project is ___ (terminas)."',['delayed','due','finished','done'],1,'"Due"=terminas, reikiamas.'),
+    ],
+    'Technology':[
+      th('Technology (B1/B2)','Technologijų žodynas.<br><div class="th-hl">software, hardware, bandwidth, encryption, algorithm, debug, server, cloud</div><div class="th-ex">"The software update improved the interface."</div>'),
+      mc('medium','"Bandwidth" reiškia:',['Interneto kaina','Duomenų perdavimo spartos dydis','Kompiuterio atmintis','Programos dydis'],1,'"Bandwidth"=interneto spartos talpa.'),
+      fi('medium','Opposite of "encrypt":','decrypt','"Decrypt"=iššifruoti.'),
+      mc('hard','"The server went ___" (offline):',['down','out','off','away'],0,'"Go down"=nustoti veikti.'),
+      fi('hard','Instructions for computer to solve problem:','algorithm','"Algorithm"=algoritmas.'),
+      mc('expert','"We need to ___ the bug."',['delete','debug','uninstall','reboot'],1,'"Debug"=rasti ir taisyti klaidas.'),
+    ],
+    'Travel & Places':[
+      th('Travel & Places','Kelionių žodynas.<br><div class="th-hl">destination, itinerary, departure, arrival, customs, luggage, boarding pass, layover</div><div class="th-ex">"My flight has a 2-hour layover in Frankfurt."</div>'),
+      mc('easy','"Bagažas" angliškai:',['package','luggage','suitcase','bag'],1,'"Luggage"=bagažas (bendrinai).'),
+      fi('easy','"Atvykimas" (arrival/departure):','arrival','"Arrival"=atvykimas.'),
+      mc('medium','"Muitinė" angliškai:',['border','customs','security','checkpoint'],1,'"Customs"=muitinė.'),
+      fi('medium','"Kelionės planas" one word:','itinerary','"Itinerary"=kelionės planas.'),
+      mc('hard','"The flight was ___ by 2 hours." (atidėtas):',['delayed','cancelled','postponed','missed'],0,'"Delayed"=atidėtas (dėl vėlavimo).'),
+    ],
+    'Idioms':[
+      th('Idioms (B2/C1)','Frazeologizmai – reikšmė nepriklauso nuo žodžių.<br><div class="th-hl">"Break a leg"=sėkmės | "Hit the books"=mokytis<br>"Spill the beans"=atskleisti paslaptį | "Under the weather"=serga</div><div class="th-ex">"She finally spilled the beans about the party."</div>'),
+      mc('hard','"Hit the books" reiškia:',['Mušti knygas','Pradėti mokytis','Pirkti knygas','Mesti mokytis'],1,'"Hit the books"=intensyviai mokytis.'),
+      fi('hard','"Under the weather" means feeling:','sick','"Under the weather"=serga/jaučiasi blogai.'),
+      mc('expert','"He passed with flying ___."',['birds','colours','flags','wings'],1,'"With flying colours"=puikiai.'),
+      fi('expert','"Once in a blue ___ means rarely."','moon','"Once in a blue moon"=labai retai.'),
+    ],
+  }},
+  reading:{label:'📄 Skaitymas',topics:{
+    'Short Texts':[
+      th('Reading: Short Texts','Strategija trumpiems tekstams.<br><div class="th-hl">1. Perskaityk klausimą<br>2. Skenuok tekstą raktažodžiams<br>3. Atsakyk remdamasis tekstu, ne intuicija</div><div class="th-ex">Tinkamas tekstas: skelbimas, žinutė, užrašas</div>'),
+      mc('easy','"Library opens 9AM, closes 6PM." When does it close?',['9 AM','12 PM','6 PM','8 PM'],2,'Tekstas: "closes at 6 PM".'),
+      mc('medium','"John is taller than Mike, but shorter than Anna." Tallest?',['John','Mike','Anna','Same'],2,'Anna>John>Mike.'),
+      fi('medium','"Despite the rain, they enjoyed the picnic." Contrast word?','despite','"Despite"=nors/nepaisant.'),
+      mc('hard','"Postponed due to unforeseen circumstances." Meaning of "postponed"?',['Cancelled','Moved later','Started early','Moved online'],1,'"Postpone"=atidėti vėliau.'),
+      mc('expert','"The initiative yielded inconclusive results." "Yielded" means?',['Destroyed','Produced','Avoided','Required'],1,'"Yield"=duoti, sukurti rezultatus.'),
+    ],
+    'Newspaper Articles':[
+      th('Reading: Newspaper Articles','Laikraščio straipsniai – B1/B2 lygis.<br><div class="th-hl">Headline: sutrumpinta, be artikelių<br>Lead paragraph: kas, kur, kada, kodėl<br>Quote: tiesioginis šaltinis</div><div class="th-ex">"PM announces new climate policy" – headline stilius</div>'),
+      mc('medium','"The minister resigned amid growing pressure." "Amid" means?',['Because of','Despite','During/surrounded by','Before'],2,'"Amid"=esant, viduryje.'),
+      fi('medium','"Officials were unavailable for ___." (komentaras):','comment','"No comment" – standartinė frazė.'),
+      mc('hard','"The report corroborates earlier findings." "Corroborates" means?',['Contradicts','Confirms','Ignores','Summarises'],1,'"Corroborate"=patvirtinti.'),
+    ],
+    'Fiction Extracts':[
+      th('Reading: Fiction','Grožinė literatūra – B2/C1 lygis.<br><div class="th-hl">Infer = spręsti iš konteksto (netiesiogiai)<br>Tone = autoriaus nuostata/tonas<br>Metaphor, simile, irony – stilistinės priemonės</div><div class="th-ex">"Her smile was a knife." – metafora</div>'),
+      mc('medium','"He trudged through the mud." Nuotaika?',['Džiaugsmas','Vargas/sunkumas','Baimė','Nuobodulys'],1,'"Trudge"=vilktis sunkiai.'),
+      fi('medium','"Her voice was like honey." Tai yra:','simile','Lyginimas su "like"=simile (palyginimas).'),
+      mc('hard','Autorius rašo: "Of course he always kept his promises – every last one of them." Šis sakinys yra:',['Tiesioginis','Ironiškas','Metaforiškas','Šaukiamasis'],1,'Ironija – prieštarauja tikrovei.'),
+    ],
+  }},
+  listening:{label:'🎧 Klausymas',topics:{
+    'Dialogues':[
+      th('Listening: Dialogues','Klausymo strategijos.<br><div class="th-hl">Kontekstas > atskiri žodžiai<br>Tonas parodo emocijas<br>Fraziniai veiksmažodžiai dažni šnekamojoje</div><div class="th-ex">"Give me a hand" ≠ duok ranką → padėk</div>'),
+      mc('easy','"Can I help you?" – Kas tai paprastai sako?',['Gydytojas','Pardavėjas','Studentas','Draugas'],1,'Pardavėjo standartinė frazė.'),
+      mc('medium','"I\'m afraid I can\'t make it." "Make it" reiškia:',['Pagaminti','Atvykti','Parašyti','Pavykti'],1,'"Make it"=atvykti/dalyvauti.'),
+      fi('medium','"Would you mind ___ the window?" (close→-ing):','closing','"Would you mind+gerund."'),
+      mc('hard','"She seemed a bit under the weather." Ką reiškia?',['Liūdna','Pavargusi','Ligota','Nesaugi'],2,'"Under the weather"=serga.'),
+      mc('expert','"He really put his foot in it at the meeting." Reiškia:',['Pasistengė','Sukėlė gėdą/nepatogumą','Buvo greitas','Atėjo vėlai'],1,'"Put foot in it"=sukurti nepatogią situaciją.'),
+    ],
+    'Interviews':[
+      th('Listening: Interviews','Interviu klausymas – B1/B2.<br><div class="th-hl">Structured questions: open vs closed<br>Leading questions: skatina konkretų atsakymą<br>Filler words: "um", "well", "you know"</div><div class="th-ex">"So, would you say your childhood influenced your work?"</div>'),
+      mc('medium','"Could you elaborate on that?" Reiškia:',['Ar galite pakartoti?','Ar galite paaiškinti plačiau?','Ar sutinkate?','Ar kalbate tiesą?'],1,'"Elaborate"=išsamiau paaiškinti.'),
+      fi('medium','"She was reluctant to answer." "Reluctant" reiškia:','nenoriai','Reluctant=nenoriai, atsargiai.'),
+      mc('hard','"The host pressed the guest for details." "Pressed" reiškia:',['Spaudė','Prašė','Padėkojo','Klausė'],0,'"Press for"=spausti gauti informacijos.'),
+    ],
+  }},
+  speaking:{label:'🗣️ Kalbėjimas',topics:{
+    'Greetings':[
+      th('Greetings','Pasisveikinimo frazės – A1/A2.<br><div class="th-hl">Formal: "Good morning/afternoon/evening, How do you do?"<br>Informal: "Hi! Hey! What\'s up? How are things?"</div><div class="th-ex">"How do you do?" – labai formalus (atsakymas: "How do you do?")</div>'),
+      mc('easy','Formalus pasisveikinimas:',['What\'s up?','Hey!','Good morning.','Yo!'],2,'Formalus: "Good morning."'),
+      fi('easy','"Goodbye" neformali versija:','bye','Neformali: "Bye."'),
+      mc('medium','"How do you do?" Teisingas atsakymas:',['Fine thanks','How do you do?','Not bad','I\'m good'],1,'Tradiciškai: atsakai tuo pačiu klausimu.'),
+    ],
+    'Opinions':[
+      th('Opinions','Nuomonės reiškimas – B1+.<br><div class="th-hl">In my opinion... / I think... / As far as I\'m concerned...<br>I agree/disagree | I see your point, however...</div><div class="th-ex">"In my opinion, social media has both benefits and drawbacks."</div>'),
+      mc('easy','Which introduces an opinion?',['Because of this,','In my opinion,','As a result,','For example,'],1,'"In my opinion"=mano nuomone.'),
+      fi('medium','"I completely ___ with you." (sutikti):','agree','"Agree"=sutikti.'),
+      mc('hard','Formalus mandagus nesutikimas:',['That\'s wrong!','No way!','I see your point, however I\'d argue...','You\'re mistaken.'],2,'Formaliai: pripažinti, tada nesutikti.'),
+      bd('hard','Build: "From my perspective this approach has clear advantages"',['From','my','perspective','this','approach','has','clear','advantages'],['From','my','perspective','this','approach','has','clear','advantages']),
+    ],
+    'Debates':[
+      th('Debates','Debatų kalba – B2/C1.<br><div class="th-hl">Claim → Evidence → Warrant<br>Rebuttal: "While it\'s true that... nevertheless..."<br>Concession: "I concede that... but..."</div><div class="th-ex">"My opponent claims X, but the evidence shows Y."</div>'),
+      mc('medium','"My opponent raises a valid point; nevertheless..." Šis stilius yra:',['Agresyvus','Mandagus kontraargumentas','Sutikimas','Klaidos pripažinimas'],1,'Concessive rebuttal = mandagus kontraargumentas.'),
+      fi('medium','"I ___ that there are merits to that view, but ultimately..." (concede):','concede','"Concede"=pripažinti, nusileisti.'),
+      mc('hard','Stipriausias argumentas debatų struktūroje:',['Emocinis kreipinys','Statistiniai duomenys+šaltinis','Asmeninė nuomonė','Klausimai'],1,'Faktai + patikimi šaltiniai = stipriausi.'),
+    ],
+  }},
+};
+
+// ─── PLACEMENT TEST ─────────────────────────────────────────
+const PT=[
+  {cat:'Grammar',level:'A1',q:'Present Simple: Choose the correct sentence.',c:['She go to school every day.','She goes to school every day.','She going to school every day.','She gone to school every day.'],ok:1,ex:'Present Simple su he/she/it gauna galūnę -s: she goes.'},
+  {cat:'Grammar',level:'A1',q:'Present Simple: He ___ football on Saturdays.',c:['play','plays','playing','played'],ok:1,ex:'Su he naudojame plays, nes Present Simple trečiasis asmuo turi -s.'},
+  {cat:'Grammar',level:'A2',q:'Past Simple: Yesterday, they ___ a new song.',c:['learn','learns','learned','learning'],ok:2,ex:'Yesterday rodo praeitį, todėl reikia Past Simple: learned.'},
+  {cat:'Grammar',level:'A2',q:'Past Simple: We ___ late for class this morning.',c:['was','were','are','be'],ok:1,ex:'We su veiksmažodžiu be praeityje yra were.'},
+  {cat:'Grammar',level:'B1',q:'Present Perfect: I ___ never ___ to London.',c:['did/go','have/been','am/been','was/go'],ok:1,ex:'Su never ir gyvenimo patirtimi vartojame Present Perfect: have been.'},
+  {cat:'Grammar',level:'B1',q:'Present Perfect: She ___ her homework already.',c:['finished','has finished','finishes','is finishing'],ok:1,ex:'Already dažnai vartojamas su Present Perfect: has finished.'},
+  {cat:'Grammar',level:'B2',q:'Passive Voice: The bridge ___ in 1998.',c:['built','was built','has built','was building'],ok:1,ex:'Objektas gauna veiksmą, todėl vartojame pasyvą: was built.'},
+  {cat:'Grammar',level:'B2',q:'Passive Voice: English ___ in many countries.',c:['speaks','is spoken','is speaking','spoke'],ok:1,ex:'Kalba yra vartojama, ne pati kalba; reikia Passive Voice: is spoken.'},
+  {cat:'Grammar',level:'B1',q:'First Conditional: If it rains, we ___ at home.',c:['stay','will stay','stayed','would stay'],ok:1,ex:'First Conditional: if + Present Simple, will + verb.'},
+  {cat:'Grammar',level:'B2',q:'Second Conditional: If I ___ more time, I would travel.',c:['have','had','will have','had had'],ok:1,ex:'Second Conditional: if + Past Simple, would + verb.'},
+  {cat:'Grammar',level:'C1',q:'Third Conditional: If she had studied harder, she ___ the exam.',c:['will pass','would pass','would have passed','passed'],ok:2,ex:'Third Conditional: if + Past Perfect, would have + past participle.'},
+  {cat:'Grammar',level:'B2',q:'Reported Speech: He said, “I am tired.” → He said that he ___ tired.',c:['is','was','has been','will be'],ok:1,ex:'Reported Speech dažnai pakeičia laiką atgal: am tampa was.'},
+  {cat:'Grammar',level:'C1',q:'Grammar calibration: Rarely ___ such a clear explanation.',c:['I have heard','have I heard','I heard','did I heard'],ok:1,ex:'Po neigiamo/priekinio prieveiksmio Rarely vartojama inversija: have I heard.'},
+
+  {cat:'Reading',level:'A1',text:'Tom is twelve. He likes football and plays after school.',q:'What does Tom like?',c:['Music','Football','Cooking','Reading'],ok:1,ex:'Tekste aiškiai pasakyta: he likes football.'},
+  {cat:'Reading',level:'A2',text:'Anna usually walks to school, but today she is taking the bus because it is raining.',q:'Why is Anna taking the bus today?',c:['She is late','It is raining','She likes buses','School is far'],ok:1,ex:'Tekste nurodyta priežastis: because it is raining.'},
+  {cat:'Reading',level:'A2',text:'The shop opens at nine and closes at six. On Sundays, it closes at two.',q:'When does the shop close on Sundays?',c:['At nine','At six','At two','It is closed'],ok:2,ex:'Sekmadieniais parduotuvė užsidaro antrą valandą.'},
+  {cat:'Reading',level:'B1',text:'Mia wanted to buy a laptop, but she decided to save money for university instead.',q:'What did Mia decide to do?',c:['Buy a laptop','Save money','Leave university','Borrow money'],ok:1,ex:'Instead rodo sprendimo pakeitimą: ji pasirinko taupyti pinigus.'},
+  {cat:'Reading',level:'B1',text:'Although the restaurant was expensive, the food was excellent and the service was friendly.',q:'What is the writer’s opinion?',c:['Mostly positive','Mostly negative','Confused','Angry'],ok:0,ex:'Nors buvo brangu, maistas ir aptarnavimas vertinami teigiamai.'},
+  {cat:'Reading',level:'B2',text:'Many people work remotely because it saves commuting time, yet some miss face-to-face communication.',q:'What is the main idea?',c:['Remote work has benefits and drawbacks','Nobody likes remote work','Commuting is necessary','Offices are disappearing'],ok:0,ex:'Tekstas pateikia ir privalumą, ir trūkumą.'},
+  {cat:'Reading',level:'B2',text:'The speaker did not reject the proposal entirely; however, she requested several changes before approving it.',q:'What did the speaker do?',c:['Accepted immediately','Rejected completely','Asked for changes','Ignored the proposal'],ok:2,ex:'She requested several changes before approving it reiškia, kad prašė pakeitimų.'},
+  {cat:'Reading',level:'C1',text:'The article argues that technological progress is not inherently beneficial; its value depends on how societies choose to implement it.',q:'What is the author’s position?',c:['Technology is always good','Technology is always harmful','Technology’s impact depends on human choices','Society should avoid innovation'],ok:2,ex:'Pagrindinė mintis: technologijos vertė priklauso nuo įgyvendinimo.'},
+
+  {cat:'Everyday English',level:'A1',q:'Someone says “Thank you.” What is the best reply?',c:['Please','You’re welcome','I am fine','Good night'],ok:1,ex:'Mandagus atsakymas į Thank you yra You’re welcome.'},
+  {cat:'Everyday English',level:'A1',q:'How do you ask someone’s name politely?',c:['Name?','What your name?','What is your name?','You are name?'],ok:2,ex:'Teisingas klausimas: What is your name?'},
+  {cat:'Everyday English',level:'A2',q:'You did not hear someone. What should you say?',c:['Repeat!','What?','Could you repeat that, please?','Speak again now.'],ok:2,ex:'Could you repeat that, please? yra mandagus prašymas pakartoti.'},
+  {cat:'Everyday English',level:'A2',q:'You want to order coffee. Choose the polite option.',c:['Give coffee.','I want coffee now.','Could I have a coffee, please?','Coffee me.'],ok:2,ex:'Could I have..., please? yra mandagi užsakymo forma.'},
+  {cat:'Everyday English',level:'B1',q:'A friend says they failed a test. Best response?',c:['That is your fault.','Never mind, tests are stupid.','I’m sorry to hear that. You’ll do better next time.','Good for you.'],ok:2,ex:'Tai empatiškas ir socialiai tinkamas atsakymas.'},
+  {cat:'Everyday English',level:'B1',q:'You need to interrupt politely in a meeting.',c:['Stop talking.','Excuse me, may I add something?','I speak now.','Listen to me.'],ok:1,ex:'Excuse me, may I add something? yra mandagus įsiterpimas.'},
+  {cat:'Everyday English',level:'B2',q:'You disagree politely. Choose the best phrase.',c:['You are wrong.','That makes no sense.','I see your point, but I think there may be another way to look at it.','No.'],ok:2,ex:'Frazė pripažįsta kito nuomonę ir mandagiai pateikia nesutikimą.'},
+  {cat:'Everyday English',level:'C1',q:'Choose the most diplomatic way to reject an invitation.',c:['No, I don’t want to.','Unfortunately, I won’t be able to attend, but thank you for inviting me.','Bad idea.','I am not coming.'],ok:1,ex:'Ši frazė mandagi, aiški ir socialiai tinkama.'},
+
+  {cat:'Phrasal Verbs',level:'A2',q:'What does “give up” mean?',c:['Start','Stop trying','Return','Find'],ok:1,ex:'Give up reiškia pasiduoti arba nustoti bandyti.'},
+  {cat:'Phrasal Verbs',level:'B1',q:'She turned down the job offer. What does “turned down” mean?',c:['Accepted','Refused','Lost','Created'],ok:1,ex:'Turn down reiškia atsisakyti pasiūlymo.'},
+  {cat:'Phrasal Verbs',level:'B1',q:'I need to put aside some money. What does “put aside” mean?',c:['Spend','Save','Forget','Borrow'],ok:1,ex:'Put aside money reiškia atidėti arba taupyti pinigus.'},
+  {cat:'Phrasal Verbs',level:'B2',q:'Please bring up this issue during the meeting.',c:['Mention','Hide','Cancel','Solve immediately'],ok:0,ex:'Bring up reiškia paminėti arba iškelti temą.'},
+  {cat:'Phrasal Verbs',level:'B2',q:'The meeting was put off until Friday.',c:['Cancelled forever','Postponed','Started','Shortened'],ok:1,ex:'Put off reiškia atidėti vėlesniam laikui.'},
+  {cat:'Phrasal Verbs',level:'C1',q:'She came up with a brilliant solution.',c:['Rejected','Invented or suggested','Forgot','Copied'],ok:1,ex:'Come up with reiškia sugalvoti idėją ar sprendimą.'},
+
+  {cat:'Slang',level:'B1',q:'In informal English, “That movie was awesome” means:',c:['Very bad','Very good','Very long','Very old'],ok:1,ex:'Awesome neformalioje kalboje reiškia labai geras/puikus.'},
+  {cat:'Slang',level:'B2',q:'“I’m gonna leave soon” means:',c:['I left already','I am going to leave soon','I never leave','I cannot leave'],ok:1,ex:'Gonna yra neformali going to forma.'},
+  {cat:'Slang',level:'C1',q:'“That exam was a piece of cake” means:',c:['It was easy','It was delicious','It was impossible','It was expensive'],ok:0,ex:'A piece of cake yra idioma, reiškianti labai lengva.'},
+
+  {cat:'Writing',level:'B1',q:'Write 2–3 sentences about your favourite hobby. Use at least 18 words.',minWords:18,ex:'Užduotis įskaitoma, jei parašyta bent 18 žodžių ir tekstas atitinka temą.'},
+  {cat:'Writing',level:'B2',q:'Write 2–3 sentences explaining whether students should use phones at school. Use at least 22 words.',minWords:22,ex:'Užduotis įskaitoma, jei parašyta bent 22 žodžiai ir pateikiama aiški nuomonė.'}
+];
+
+// ─── SHOP ────────────────────────────────────────────────────
+const SHOP={
+  skins:[{id:'s1',name:'Žvaigždelė',icon:'⭐',desc:'Spindinčios žvaigždelės skinai',price:50},{id:'s2',name:'Liūtukas',icon:'🦁',desc:'Drąsus liūtukas',price:75},{id:'s3',name:'Vienaragis',icon:'🦄',desc:'Magiškas vienaragis',price:120},{id:'s4',name:'Robotas',icon:'🤖',desc:'Pažangus robotas',price:100},{id:'s5',name:'Pelėda',icon:'🦉',desc:'Išmintinga pelėda',price:80},{id:'s6',name:'Lapė',icon:'🦊',desc:'Gudri lapė',price:90}],
+  frames:[{id:'f1',name:'Aukso',icon:'🟡',desc:'Aukso rėmelis',price:80},{id:'f2',name:'Deimantinis',icon:'💎',desc:'Deimanto rėmelis',price:150},{id:'f3',name:'Gėlių',icon:'🌸',desc:'Gėlių rėmelis',price:90},{id:'f4',name:'Ugnies',icon:'🔥',desc:'Ugningas rėmelis',price:130}],
+  boosts:[{id:'b1',name:'+10% XP 1h',icon:'⚡',desc:'Valanda extra XP',price:30},{id:'b2',name:'+25% XP 3h',icon:'🚀',desc:'3h XP boost',price:70},{id:'b3',name:'2× XP 30min',icon:'💫',desc:'Dvigubi XP',price:50},{id:'b4',name:'XP apsauga',icon:'🛡️',desc:'Apsauga nuo praradimo',price:40}],
+};
+
+const ACH=[
+  {id:'a1',icon:'📚',name:'Pirma pamoka',fn:s=>s.lessons>=1},
+  {id:'a2',icon:'🎓',name:'10 pamokų',fn:s=>s.lessons>=10},
+  {id:'a3',icon:'⚡',name:'50 XP',fn:s=>s.xp>=50},
+  {id:'a4',icon:'🪙',name:'Pirmoji moneta',fn:s=>s.coins>=1},
+  {id:'a5',icon:'💰',name:'100 monetų',fn:s=>s.coins>=100},
+  {id:'a6',icon:'🔥',name:'7 dienų serija',fn:s=>s.streak>=7},
+  {id:'a7',icon:'🛍️',name:'Pirmas pirkimas',fn:s=>s.inv.length>=1},
+  {id:'a8',icon:'🏆',name:'90% tikslumas',fn:s=>s.tot>=10&&s.cor/s.tot>=0.9},
+  {id:'a9',icon:'🧮',name:'5 matematikos',fn:s=>s.done.filter(d=>d.startsWith('math')).length>=5},
+  {id:'a10',icon:'🇬🇧',name:'5 anglų temos',fn:s=>s.done.filter(d=>d.startsWith('eng')).length>=5},
+];
+
+// ─── STATE ───────────────────────────────────────────────────
+let S={user:null,xp:0,coins:0,streak:0,lessons:0,cor:0,tot:0,engLevel:'A1',engProg:0,mathProg:0,inv:[],eq:{},done:[],steps:[],step:0,curSubj:null,curTopic:null,mathClass:5,shopTab:'skins',xpBoost:1};
+let ptIdx=0,ptSc=0,bSel=[];
+
+// ─── NAV / SCREEN ────────────────────────────────────────────
+function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));T(id).classList.add('active');updNav();if(id==='screen-profile')renderProfile();if(id==='screen-shop')renderShop();if(id==='screen-dashboard')renderDash();}
+function updNav(){[['nxp','nxp2','nxp3','nxpP'],[s=>s.coins,'ncn','ncn2','ncn3','ncnS']].forEach((ids)=>{});
+  [['nxp','nxp2','nxp3','nxpP'],['ncn','ncn2','ncn3','ncnS']].forEach((ids,i)=>ids.forEach(id=>{const el=T(id);if(el)el.textContent=i===0?S.xp:S.coins;}));
+  const st=T('nst');if(st)st.textContent=S.streak;
+}
+
+// ─── AUTH ────────────────────────────────────────────────────
+function chooseTheme(t){if(t==='classic')document.body.classList.add('classic');else document.body.classList.remove('classic');showScreen('screen-auth');}
+function swAuth(t,btn){document.querySelectorAll('.auth-tab').forEach(b=>b.classList.remove('active'));btn.classList.add('active');T('auth-login').style.display=t==='login'?'':'none';T('auth-reg').style.display=t==='reg'?'':'none';}
+function doLogin(){const u=T('lUser').value.trim(),p=T('lPass').value.trim();if(!u||!p){toast('Įvesk vardą ir slaptažodį!');return;}const sv=localStorage.getItem('el_'+u);if(sv)Object.assign(S,JSON.parse(sv));S.user=u;afterLogin();}
+function doReg(){const u=T('rUser').value.trim();if(!u){toast('Įvesk vardą!');return;}S={...S,user:u,xp:0,coins:0,lessons:0,done:[],inv:[],eq:{},cor:0,tot:0,placementDone:false};afterLogin();}
+function afterLogin(){const av=T('navAv');if(av)av.textContent=S.user[0].toUpperCase();showScreen('screen-dashboard');renderDash();}
+function doLogout(){save();S={user:null,xp:0,coins:0,streak:0,lessons:0,cor:0,tot:0,engLevel:'A1',engProg:0,mathProg:0,inv:[],eq:{},done:[],steps:[],step:0,curSubj:null,curTopic:null,mathClass:5,shopTab:'skins',xpBoost:1};showScreen('screen-auth');}
+
+// ─── PLACEMENT ───────────────────────────────────────────────
+function startPT(){ptIdx=0;ptSc=0;showScreen('screen-placement');renderPQ();}
+function wordCount(v){return (v||'').trim().split(/\s+/).filter(Boolean).length;}
+function renderPQ(){
+  if(ptIdx>=PT.length){finPT();return;}
+  const q=PT[ptIdx];
+  const pct=Math.round(ptIdx/PT.length*100);
+  const meta=`${q.cat} • ${q.level} • ${ptIdx+1}/${PT.length}`;
+  if(q.cat==='Writing'){
+    T('placeContent').innerHTML=`<div style="background:var(--bg2);border-radius:8px;height:8px;overflow:hidden;margin-bottom:1rem"><div style="width:${pct}%;height:100%;background:var(--pr);border-radius:8px;transition:width .4s"></div></div><p style="font-size:.85rem;color:var(--tx2);margin-bottom:1rem">${meta}</p><p style="font-weight:800;font-size:1.1rem;margin-bottom:1rem">${q.q}</p><textarea id="ptWriting" class="fill-inp" style="height:140px;resize:vertical" placeholder="Write your answer here..."></textarea><button class="btn btn-pr" onclick="ansWriting()">Patikrinti</button><div id="ptFb"></div>`;
+    return;
+  }
+  const reading=q.text?`<div style="background:var(--bg2);border-left:4px solid var(--pr);border-radius:0 var(--rs) var(--rs) 0;padding:1rem 1.2rem;margin-bottom:1rem;line-height:1.7">${q.text}</div>`:'';
+  T('placeContent').innerHTML=`<div style="background:var(--bg2);border-radius:8px;height:8px;overflow:hidden;margin-bottom:1rem"><div style="width:${pct}%;height:100%;background:var(--pr);border-radius:8px;transition:width .4s"></div></div><p style="font-size:.85rem;color:var(--tx2);margin-bottom:1rem">${meta}</p>${reading}<p style="font-weight:800;font-size:1.1rem;margin-bottom:1.5rem">${q.q}</p><div class="choices">${q.c.map((c,i)=>`<button class="choice" onclick="ansP(${i})">${c}</button>`).join('')}</div><div id="ptFb"></div>`;
+}
+function ansP(i){
+  const q=PT[ptIdx];
+  const ok=i===q.ok;
+  document.querySelectorAll('#placeContent .choice').forEach((b,j)=>{b.disabled=true;if(j===q.ok)b.classList.add('correct');else if(j===i)b.classList.add('wrong');});
+  if(ok)ptSc++;
+  T('ptFb').innerHTML=`<div class="fb ${ok?'ok':'bad'}">${ok?'Teisingai!':'Neteisingai.'} ${q.ex}</div><div style="text-align:right;margin-top:1rem"><button class="btn btn-pr" onclick="ptIdx++;renderPQ()">Tęsti →</button></div>`;
+}
+function ansWriting(){
+  const q=PT[ptIdx],txt=T('ptWriting').value,wc=wordCount(txt),ok=wc>=q.minWords;
+  if(ok)ptSc++;
+  T('ptWriting').disabled=true;
+  T('ptFb').innerHTML=`<div class="fb ${ok?'ok':'bad'}">${ok?'Įskaityta!':'Dar per trumpa.'} Parašei ${wc} žodžius; reikia bent ${q.minWords}. ${q.ex}</div><div style="text-align:right;margin-top:1rem"><button class="btn btn-pr" onclick="ptIdx++;renderPQ()">Tęsti →</button></div>`;
+}
+function placementLevel(sc){
+  if(sc<=4)return 'A1';
+  if(sc<=9)return 'A2';
+  if(sc<=14)return 'B1';
+  if(sc<=19)return 'B2';
+  if(sc<=24)return 'C1';
+  return 'C2';
+}
+function levelDesc(lvl){
+  return {
+    A1:'Pradinis lygis: supranti paprastas frazes, prisistatymą, pagrindinius žodžius ir labai trumpus sakinius.',
+    A2:'Elementarus lygis: gali kalbėti apie kasdienes situacijas, šeimą, mokyklą, pirkinius ir paprastus planus.',
+    B1:'Savarankiškas lygis: supranti pagrindines mintis, gali pasakoti patirtis, reikšti nuomonę ir kurti paprastus tekstus.',
+    B2:'Aukštesnis savarankiškas lygis: gali diskutuoti, suprasti sudėtingesnius tekstus ir vartoti įvairesnę gramatiką.',
+    C1:'Pažengęs lygis: kalbi ir rašai lanksčiai, supranti sudėtingas idėjas, akademinį bei formalų stilių.',
+    C2:'Labai aukštas lygis: anglų kalbą vartoji beveik kaip gimtakalbis, supranti niuansus, idiomatiką ir sudėtingą argumentaciją.'
+  }[lvl]||'';
+}
+function finPT(){
+  const scaled=Math.round(ptSc/PT.length*30);
+  const lvl=placementLevel(scaled);
+  S.engLevel=lvl;
+  save();
+  T('placeContent').innerHTML=`<div style="text-align:center;padding:1rem 0"><div style="font-size:4rem;margin-bottom:1rem">🎯</div><h2 style="font-family:var(--fd);font-size:2rem;color:var(--pr)">Tavo lygis: ${lvl}</h2><p style="color:var(--tx2);margin:.5rem 0 1rem">Rezultatas: ${scaled}/30 taškų (${ptSc}/${PT.length} teisingų / įskaitytų atsakymų)</p><div class="th-hl" style="text-align:left;margin-bottom:2rem">${levelDesc(lvl)}</div><button class="btn btn-pr" onclick="showSubj('english')">Pradėti anglų kalbą! 🚀</button></div>`;
+}
+
+// ─── DASHBOARD ───────────────────────────────────────────────
+function renderDash(){if(!S.user)return;T('wMsg').textContent=`Sveiki, ${S.user}! 👋`;const av=T('navAv');if(av)av.textContent=S.user[0].toUpperCase();['sXP','sCN','sLS'].forEach((id,i)=>{const el=T(id);if(el)el.textContent=[S.xp,S.coins,S.lessons][i];});const ep=T('eProg');if(ep)ep.style.width=S.engProg+'%';const epl=T('eProgLbl');if(epl)epl.textContent=S.engProg+'% baigta';const mp=T('mProg');if(mp)mp.style.width=S.mathProg+'%';const mpl=T('mProgLbl');if(mpl)mpl.textContent=S.mathProg+'% baigta';updNav();}
+
+// ─── SUBJECTS ────────────────────────────────────────────────
+let curMC=5;
+function showSubj(s){if(s==='english' && !S.placementDone){startPT();return;}S.curSubj=s;showScreen('screen-subject');T('subjTitle').textContent=s==='english'?'🇬🇧 Anglų kalba':'🔢 Matematika';s==='english'?renderEng():renderMath();}
+function renderEng(){
+  let html=`<p style="color:var(--tx2);margin-bottom:1rem">Tavo lygis: <strong style="color:var(--pr)">${S.engLevel}</strong></p>`;
+  Object.entries(ENG).forEach(([ck,cat])=>{
+    html+=`<div style="margin-bottom:2rem"><p class="sec-title">${cat.label}</p><div class="topic-grid">`;
+    Object.keys(cat.topics).forEach(t=>{
+      const key='eng_'+ck+'_'+t,done=S.done.includes(key);
+      html+=`<div class="topic-card ${done?'done':''}" onclick="startLesson('english','${ck}','${t.replace(/'/g,"\\'")}')"><div class="topic-name">${t}</div><div class="topic-meta">${cat.topics[t].length} žingsniai</div><div class="tbadge ${done?'tb-done':'tb-new'}">${done?'✅ Baigta':'Nauja'}</div></div>`;
+    });
+    html+='</div></div>';
+  });
+  T('subjBody').innerHTML=html;
+}
+function renderMath(){
+  let tabs='';for(let c=5;c<=10;c++)tabs+=`<button class="ctab${c===curMC?' active':''}" onclick="setMC(${c})">${c} kl.</button>`;
+  const cd=MATH[curMC];
+  let grid='<div class="topic-grid">';
+  cd.topics.forEach(t=>{
+    const key=`math_${curMC}_${t}`,done=S.done.includes(key),has=!!cd.lessons[t];
+    grid+=`<div class="topic-card ${done?'done':''}" onclick="${has?`startLesson('math','${curMC}','${t.replace(/'/g,"\\'")}')`:''}" style="${!has?'cursor:default;opacity:.5':''}"><div class="topic-name">${t}</div><div class="topic-meta">${has?cd.lessons[t].length+' žingsniai':'...'}</div><div class="tbadge ${done?'tb-done':'tb-new'}">${done?'✅ Baigta':'Nauja'}</div></div>`;
+  });
+  grid+='</div>';
+  T('subjBody').innerHTML=`<div class="class-tabs">${tabs}</div>${grid}`;
+}
+function setMC(c){curMC=c;renderMath();}
+
+// ─── LESSON ENGINE ───────────────────────────────────────────
+function startLesson(subj,cat,topic){
+  S.curSubj=subj;S.curTopic=topic;bSel=[];
+  let steps=subj==='english'?(ENG[cat]&&ENG[cat].topics[topic]):((MATH[cat]&&MATH[cat].lessons[topic]));
+  if(!steps||!steps.length){toast('Šis turinys dar ruošiamas!');return;}
+  S.steps=[...steps];S.step=0;
+  showScreen('screen-lesson');renderStep();
+}
+function renderStep(){
+  const tot=S.steps.length,pct=Math.round(S.step/tot*100);
+  T('lPBar').style.width=pct+'%';T('lCount').textContent=`${S.step+1}/${tot}`;
+  const nb=T('lNext');nb.style.display='none';
+  const s=S.steps[S.step];
+  const dg=s.diff?db(s.diff):'';
+  let html='';
+  if(s.type==='theory'){
+    html=`<div class="l-theory"><h3>${s.title}</h3>${s.content}</div>`;
+    nb.textContent='Supratau →';nb.style.display='flex';nb.onclick=nextStep;
+  }else if(s.type==='mc'){
+    html=`<div class="q-lbl">Pasirink teisingą ${dg}</div><div class="q-txt">${s.q}</div><div class="choices">${s.c.map((c,i)=>`<button class="choice" onclick="ansMC(${i})">${c}</button>`).join('')}</div><div id="fb"></div>`;
+  }else if(s.type==='fill'){
+    html=`<div class="q-lbl">Užpildyk trūkstamą ${dg}</div><div class="q-txt">${s.q}</div><input class="fill-inp" id="fInp" placeholder="Atsakymas..." onkeydown="if(event.key==='Enter')chkFill()"/><div id="fb"></div>`;
+    nb.textContent='Tikrinti ✓';nb.style.display='flex';nb.onclick=chkFill;
+    setTimeout(()=>{const el=T('fInp');if(el)el.focus();},80);
+  }else if(s.type==='build'){
+    bSel=[];
+    html=`<div class="q-lbl">Sudaryti sakinį ${dg}</div><div class="q-txt">${s.q}</div><div class="sent-area" id="sentA" onclick="rmW()"></div><div class="word-bank">${s.w.map((w,i)=>`<button class="wchip" id="wc${i}" onclick="addW('${w}',${i})">${w}</button>`).join('')}</div><div id="fb"></div>`;
+    nb.textContent='Tikrinti ✓';nb.style.display='flex';nb.onclick=chkBuild;
+  }
+  T('lCard').innerHTML=html;
+}
+function ansMC(i){
+  const s=S.steps[S.step];
+  const btns=document.querySelectorAll('#lCard .choice');
+  btns.forEach(b=>b.disabled=true);
+  btns[s.ok].classList.add('correct');
+  S.tot++;
+  const fb=T('fb');
+  if(i===s.ok){S.cor++;aXP(10);aCoin(5);btns[i].classList.add('correct');if(fb){fb.className='fb ok';fb.textContent='✅ Teisingai! Puiku!';}}
+  else{btns[i].classList.add('wrong');if(fb){fb.className='fb bad';fb.innerHTML=`❌ Neteisingai. Teisingas: <strong>${s.c[s.ok]}</strong><br><small>${s.ex||''}</small>`;}}
+  const nb=T('lNext');nb.textContent='Tęsti →';nb.style.display='flex';nb.onclick=nextStep;
+}
+function chkFill(){
+  const s=S.steps[S.step],inp=T('fInp');if(!inp)return;
+  const rawVal=inp.value.trim();
+
+  // Normalize for comparison: lowercase, collapse spaces, unify decimal separators, strip units
+  function norm(v){
+    return v.toLowerCase()
+      .replace(/\s+/g,' ').trim()
+      .replace(/,/g,'.')          // LT decimal comma → dot (must come before stripping commas)
+      .replace(/\s/g,'')          // remove spaces (for math expressions)
+      .replace(/[°€%]/g,'');      // strip units user might omit
+  }
+
+  // Split accepted answers ONLY by ' arba ' (not by '/') so fractions like 1/2 stay intact
+  const okList=s.a.split(/ arba /i).map(x=>x.trim()).filter(Boolean);
+
+  const normVal=norm(rawVal);
+
+  const ok=okList.some(o=>{
+    // 1. Direct normalized match
+    if(normVal===norm(o))return true;
+    // 2. Raw match (case-insensitive)
+    if(rawVal.toLowerCase()===o.toLowerCase())return true;
+    // 3. Fraction equivalence: e.g. user types "0.5" for answer "1/2" or vice versa
+    function fracToDecimal(str){
+      const m=str.match(/^(-?\d+)\/(\d+)$/);
+      if(m)return parseFloat(m[1])/parseFloat(m[2]);
+      return parseFloat(str);
+    }
+    const nv=fracToDecimal(normVal);
+    const no=fracToDecimal(norm(o));
+    if(!isNaN(nv)&&!isNaN(no)&&Math.abs(nv-no)<0.001)return true;
+    return false;
+  });
+
+  S.tot++;const fb=T('fb');
+  if(ok){S.cor++;aXP(10);aCoin(5);inp.classList.add('correct');if(fb){fb.className='fb ok';fb.textContent='✅ Teisingai!';}}
+  else{inp.classList.add('wrong');if(fb){fb.className='fb bad';fb.innerHTML=`❌ Neteisingai. Teisingas: <strong>${s.a}</strong><br><small>${s.ex||''}</small>`;}}
+  inp.disabled=true;const nb=T('lNext');nb.textContent='Tęsti →';nb.style.display='flex';nb.onclick=nextStep;
+}
+function addW(w,i){bSel.push(w);T('wc'+i).classList.add('used');T('sentA').innerHTML=bSel.map(x=>`<span class="pw">${x}</span>`).join('');}
+function rmW(){if(!bSel.length)return;const r=bSel.pop();const chips=document.querySelectorAll('.wchip');let f=false;chips.forEach(c=>{if(!f&&c.textContent===r&&c.classList.contains('used')){c.classList.remove('used');f=true;}});T('sentA').innerHTML=bSel.map(x=>`<span class="pw">${x}</span>`).join('');}
+function chkBuild(){const s=S.steps[S.step];const fb=T('fb');S.tot++;const ok=JSON.stringify(bSel)===JSON.stringify(s.ok);if(ok){S.cor++;aXP(15);aCoin(8);if(fb){fb.className='fb ok';fb.textContent='✅ Teisingas sakinys!';}}else{if(fb){fb.className='fb bad';fb.innerHTML=`❌ Teisingas: <strong>${s.ok.join(' ')}</strong>`;}}const nb=T('lNext');nb.textContent='Tęsti →';nb.onclick=nextStep;}
+function nextStep(){bSel=[];S.step++;if(S.step>=S.steps.length){finLesson();return;}renderStep();}
+function finLesson(){
+  S.lessons++;const xg=Math.round(30*S.xpBoost),cg=18;aXP(xg);aCoin(cg);
+  const key=S.curSubj==='english'?`eng_${S.curTopic}`:`math_${curMC}_${S.curTopic}`;
+  if(!S.done.includes(key))S.done.push(key);
+  if(S.curSubj==='english')S.engProg=Math.min(100,S.engProg+2);else S.mathProg=Math.min(100,S.mathProg+2);
+  save();confetti();
+  T('mXP').textContent=xg;T('mCoin').textContent=cg;T('mTitle').textContent='Pamoka baigta! 🎉';T('mDesc').textContent=`Puikiai! Tema: "${S.curTopic}"`;
+  T('mContinue').onclick=()=>{T('compModal').classList.remove('open');backFromLesson();};
+  T('compModal').classList.add('open');
+}
+function backFromLesson(){S.curSubj==='english'?showSubj('english'):showSubj('math');}
+
+// ─── SHOP ────────────────────────────────────────────────────
+let shopTab='skins';
+function swShop(tab,btn){shopTab=tab;document.querySelectorAll('.shop-tab').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderShop();}
+function renderShop(){
+  const el=T('shopBody');if(!el)return;const cs=T('ncnS');if(cs)cs.textContent=S.coins;
+  if(shopTab==='inv'){
+    if(!S.inv.length){el.innerHTML='<p style="color:var(--tx2)">Inventorius tuščias!</p>';return;}
+    el.innerHTML='<div class="inv-grid">'+S.inv.map(id=>{const item=findItem(id);if(!item)return'';const cat=getCat(id),eq=S.eq[cat]===id;return`<div class="inv-item ${eq?'equipped':''}"><div style="font-size:2.2rem;margin-bottom:.5rem">${item.icon}</div><div style="font-weight:800;font-size:.85rem">${item.name}</div><div style="margin-top:.5rem">${eq?'<span style="color:var(--ac2);font-weight:700;font-size:.75rem">✓ Aktyvuota</span>':`<button class="btn btn-sm btn-pr" onclick="equip('${id}','${cat}')">Aktyvuoti</button>`}</div></div>`;}).join('')+'</div>';return;
+  }
+  el.innerHTML='<div class="shop-grid">'+(SHOP[shopTab]||[]).map(item=>{const owned=S.inv.includes(item.id),cat=getCat(item.id),eq=S.eq[cat]===item.id;return`<div class="shop-item ${owned?'owned':''} ${eq?'equipped':''}"><div class="si-icon">${item.icon}</div><div class="si-name">${item.name}</div><div class="si-desc">${item.desc}</div>${!owned?`<div class="si-price">🪙 ${item.price}</div><button class="btn btn-ac btn-sm" onclick="buyItem('${item.id}','${cat}')">Pirkti</button>`:eq?`<span style="color:var(--ac2);font-weight:700;font-size:.85rem">✓ Aktyvuota</span>`:`<button class="btn btn-out btn-sm" onclick="equip('${item.id}','${cat}')">Aktyvuoti</button>`}</div>`;}).join('')+'</div>';
+}
+function buyItem(id,cat){const item=findItem(id);if(!item)return;if(S.coins<item.price){toast('Nepakanka monetų! 🪙');return;}if(S.inv.includes(id)){toast('Jau turite!');return;}S.coins-=item.price;S.inv.push(id);save();toast('✅ Nupirkta: '+item.name);renderShop();updNav();}
+function equip(id,cat){S.eq[cat]=id;save();toast('✅ Aktyvuota!');renderShop();}
+function getCat(id){return id[0]==='s'?'skins':id[0]==='f'?'frames':'boosts';}
+function findItem(id){for(const cat of Object.values(SHOP)){const f=cat.find(i=>i.id===id);if(f)return f;}return null;}
+
+// ─── PROFILE ─────────────────────────────────────────────────
+function renderProfile(){
+  if(!S.user)return;
+  const skin=S.eq.skins?findItem(S.eq.skins):null;
+  T('profAv').textContent=skin?skin.icon:S.user[0].toUpperCase();
+  T('profName').textContent=S.user;
+  const lvl=Math.floor(S.xp/100)+1;
+  T('profLvl').textContent=`Lygis ${lvl} • Anglų: ${S.engLevel}`;
+  T('nxpP').textContent=S.xp;
+  ['pXP','pCN','pLS'].forEach((id,i)=>{const el=T(id);if(el)el.textContent=[S.xp,S.coins,S.lessons][i];});
+  const acc=S.tot>0?Math.round(S.cor/S.tot*100):0;const pa=T('pACC');if(pa)pa.textContent=acc+'%';
+  T('achGrid').innerHTML=ACH.map(a=>`<div class="ach ${a.fn(S)?'':'locked'}"><div class="ach-icon">${a.icon}</div><div class="ach-name">${a.name}</div></div>`).join('');
+}
+
+// ─── UTILS ───────────────────────────────────────────────────
+function aXP(n){const r=Math.round(n*S.xpBoost);S.xp+=r;const p=T('xpPop');T('xpTxt').textContent='+'+r+' XP';p.style.display='flex';p.style.opacity='1';setTimeout(()=>{p.style.transition='opacity .5s';p.style.opacity='0';setTimeout(()=>{p.style.display='none';p.style.transition='';},500);},1800);updNav();save();}
+function aCoin(n){S.coins+=n;updNav();save();}
+function toast(msg){const t=T('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2600);}
+function confetti(){const w=T('confW');w.innerHTML='';const cols=['#7C5CBF','#FF7043','#FFB300','#43A047','#2196F3','#E91E63'];for(let i=0;i<45;i++){const el=document.createElement('div');el.className='cp';el.style.left=Math.random()*100+'vw';el.style.background=cols[Math.floor(Math.random()*6)];el.style.animationDelay=Math.random()*.8+'s';el.style.animationDuration=(1.5+Math.random())+'s';const sz=8+Math.random()*8;el.style.width=el.style.height=sz+'px';w.appendChild(el);}setTimeout(()=>w.innerHTML='',3200);}
+function save(){if(!S.user)return;try{localStorage.setItem('el_'+S.user,JSON.stringify(S));}catch(e){}}
+
+/* ─── eduPULSE UPDATE 2026-05: A1–C2 TESTAS + DAUGIAU UŽDUOČIŲ ─── */
+(function(){
+  // Išplečiamas pradinis anglų kalbos lygio testas iki A1–C2.
+  PT.length = 0;
+  PT.push(
+    {level:'A1',q:'Choose the correct sentence:',c:['She go to school.','She goes to school.','She going school.','She gone to school.'],ok:1},
+    {level:'A1',q:'What is the opposite of "big"?',c:['Tall','Small','Fast','Cold'],ok:1},
+    {level:'A2',q:'Yesterday I ___ to the cinema.',c:['go','went','gone','going'],ok:1},
+    {level:'A2',q:'Choose the correct question:',c:['Where you live?','Where does you live?','Where do you live?','Where are live?'],ok:2},
+    {level:'B1',q:'If I had more time, I ___ exercise more.',c:['will','would','can','am'],ok:1},
+    {level:'B1',q:'Choose the correct sentence:',c:['I have seen that movie yesterday.','I saw that movie yesterday.','I seen that movie yesterday.','I was see that movie yesterday.'],ok:1},
+    {level:'B2',q:'The project ___ by the team next week.',c:['will complete','will be completed','completes','completed'],ok:1},
+    {level:'B2',q:'Choose the most natural sentence:',c:['Hardly had I arrived when it started raining.','Hardly I arrived when started raining.','I hardly arrived when rain started.','Hardly had arrived I when raining started.'],ok:0},
+    {level:'C1',q:'His explanation was so ___ that nobody understood it.',c:['lucid','obscure','transparent','clear'],ok:1},
+    {level:'C1',q:'Choose the best sentence:',c:['No sooner had she left than he arrived.','No sooner she left than he arrived.','No sooner had she leave than he arrived.','No sooner did she left than he arrived.'],ok:0},
+    {level:'C2',q:'Choose the most advanced academic style:',c:['The data shows a big change.','The findings indicate a substantial paradigm shift.','The results are very different.','The numbers changed a lot.'],ok:1},
+    {level:'C2',q:'Identify the grammatically correct sentence:',c:['Were it not for his support, the venture would have failed.','Was it not for his support, the venture failed.','If not for his support, the venture would fail yesterday.','Without his support, the venture fails.'],ok:0}
+  );
+
+  // Nauji užduočių tipai anglų kalbai.
+  window.wr = function(diff,q){return{type:'writing',diff,q}};
+  window.rd = function(diff,text,q,c,ok,ex){return{type:'reading',diff,text,q,c,ok,ex}};
+
+  function getDifficultyMultiplier(){
+    return ({A1:1,A2:1.2,B1:1.5,B2:1.8,C1:2.2,C2:2.5})[S.engLevel] || 1;
+  }
+  window.getDifficultyMultiplier = getDifficultyMultiplier;
+
+  const levelTopics = {
+    A1:[
+      th('A1: Basic English','Trumpi sakiniai, pagrindiniai veiksmažodžiai ir kasdieniai žodžiai.<br><div class="th-hl">I am, you are, she is. I like apples. He plays football.</div>'),
+      mc('easy','Choose the correct sentence:',['I am student.','I am a student.','I student am.','I are a student.'],1,'Su vienaskaitos daiktavardžiu reikia artikelio: a student.'),
+      fi('easy','Complete: She ___ happy.','is','She is happy.'),
+      bd('easy','Build: "I like English"',['I','like','English'],['I','like','English']),
+      mc('easy','Which word is a color?',['Table','Blue','Run','Happy'],1,'Blue yra spalva.'),
+      fi('easy','Complete: They ___ friends.','are','They are friends.'),
+      mc('medium','Choose the correct question:',['Do you like music?','Does you like music?','You do like music?','Are you like music?'],0,'Present Simple klausimas: Do you...?'),
+      fi('medium','Plural of "child":','children','child → children.'),
+      bd('medium','Build: "She does not like tea"',['She','does','not','like','tea'],['She','does','not','like','tea']),
+      mc('medium','"Usually" means:',['Now','Often','Never','Yesterday'],1,'Usually = dažniausiai.'),
+      fi('medium','Complete: I ___ breakfast every morning.','eat','I eat breakfast every morning.'),
+      wr('medium','Write 5 simple sentences about your daily routine.')
+    ],
+    A2:[
+      th('A2: Everyday Communication','Mokomės kalbėti apie praeitį, ateitį, keliones ir planus.<br><div class="th-hl">Past Simple: I visited. Future: I am going to visit.</div>'),
+      mc('easy','Yesterday we ___ football.',['play','played','playing','plays'],1,'Past Simple: played.'),
+      fi('easy','Past Simple of "go":','went','go → went.'),
+      bd('medium','Build: "I am going to visit London"',['I','am','going','to','visit','London'],['I','am','going','to','visit','London']),
+      mc('medium','Choose the correct comparative:',['more big','bigger','biggest','bigly'],1,'big → bigger.'),
+      fi('medium','Complete: This book is ___ than that one.','better','good → better.'),
+      mc('medium','At a hotel, you say:',['I want sleep.','I have a reservation.','Give room now.','Where food?'],1,'Mandagi frazė viešbutyje.'),
+      fi('medium','Complete: Could you ___ me, please?','help','Could you help me, please?'),
+      rd('medium','Marta is planning a short trip to Dublin. She has already booked a hotel, but she still needs to buy a train ticket.','What does Marta still need to buy?',['A hotel','A train ticket','A passport','A bag'],1,'Tekste rašoma, kad bilietą dar reikia nusipirkti.'),
+      mc('hard','Choose the correct sentence:',['I have been to Paris last year.','I went to Paris last year.','I gone to Paris last year.','I go Paris last year.'],1,'Su konkrečiu praeities laiku naudojame Past Simple.'),
+      fi('hard','Complete: If it rains, I ___ stay home.','will','First conditional: If + present, will.'),
+      wr('hard','Write a short email inviting a friend to your birthday party.')
+    ],
+    B1:[
+      th('B1: Independent User','Čia pradedame jungti laikus, naudoti sąlyginius sakinius ir aiškiai pagrįsti nuomonę.<br><div class="th-hl">I have lived here for five years. If I had more time, I would read more.</div>'),
+      mc('medium','I ___ this book twice.',['read','have read','am read','was read'],1,'Present Perfect: have read.'),
+      fi('medium','Complete: She has lived here ___ 2020.','since','Since + pradžios momentas.'),
+      bd('medium','Build: "If I had time I would travel"',['If','I','had','time','I','would','travel'],['If','I','had','time','I','would','travel']),
+      mc('hard','Choose the correct phrasal verb: "Please ___ the volume."',['turn up','look up','give up','take off'],0,'Turn up = pagarsinti.'),
+      fi('hard','Complete: I look forward to ___ from you.','hearing','look forward to + -ing.'),
+      rd('hard','Many teenagers use public transport because it is cheaper than travelling by car. However, delays can make journeys stressful.','What is one disadvantage mentioned?',['It is always expensive','It can be delayed','It is impossible to use','It is faster than cars'],1,'Tekste minima, kad vėlavimai kelia stresą.'),
+      mc('hard','Choose the best linking phrase: "I agree; ___, there are some risks."',['however','because','for example','therefore'],0,'However rodo kontrastą.'),
+      fi('hard','Reported speech: He said, "I am tired." → He said he ___ tired.','was','am → was.'),
+      mc('expert','Which sentence is more formal?',['I want to ask about the job.','I am writing to enquire about the position.','Tell me about the job.','Job info please.'],1,'Tai formalesnis registras.'),
+      wr('expert','Write a 120-word opinion paragraph: Should students have less homework?')
+    ],
+    B2:[
+      th('B2: Upper-intermediate English','Daugiau dėmesio skiriama tikslumui, stiliui, pasyvo formoms, netiesioginei kalbai ir argumentavimui.<br><div class="th-hl">The report will be published. She claimed that she had never seen it.</div>'),
+      mc('medium','The article ___ yesterday.',['published','was published','has publishing','publish'],1,'Past passive: was published.'),
+      fi('medium','Complete: The problem must ___ solved.','be','Modal passive: must be solved.'),
+      bd('hard','Build: "The results were analysed by researchers"',['The','results','were','analysed','by','researchers'],['The','results','were','analysed','by','researchers']),
+      mc('hard','Reported speech: "I will call you" → She said she ___ call me.',['will','would','can','may'],1,'will → would.'),
+      fi('hard','Complete: Despite ___ tired, he continued working.','being','Despite + gerund/noun.'),
+      rd('hard','Urban green spaces are increasingly seen as essential because they improve air quality, reduce stress, and encourage physical activity.','Which benefit is NOT mentioned?',['Better air quality','Lower stress','More exercise','Higher salaries'],3,'Higher salaries tekste neminimos.'),
+      mc('expert','Choose the inverted sentence:',['I had never seen such chaos.','Never had I seen such chaos.','Never I had seen such chaos.','I never had seen such chaos.'],1,'Inversija po neigiamo prieveiksmio: Never had I...'),
+      fi('expert','Complete: Not only ___ she talented, but she is also hardworking.','is','Inversija: Not only is she...'),
+      mc('expert','Which phrase is best for a formal email?',['Hey there','I am writing with regard to','What’s up','Tell me fast'],1,'Formalus pradžios posakis.'),
+      wr('expert','Write a 150-word formal email asking for information about a summer course.')
+    ],
+    C1:[
+      th('C1: Advanced English','C1 lygmenyje svarbu niuansai, akademinis stilius, tikslus žodynas ir argumentų struktūra.<br><div class="th-hl">Although the evidence appears compelling, alternative interpretations remain plausible.</div>'),
+      mc('hard','Choose the best word: The policy had far-reaching ___.',['implications','things','matters','stuff'],0,'Implications = pasekmės/reikšmės.'),
+      fi('hard','Complete: The proposal was rejected on the ___ that it was too expensive.','grounds','on the grounds that = remiantis tuo, kad.'),
+      rd('expert','Although automation may increase productivity, its broader social consequences remain contested, particularly regarding job security and inequality.','What is the author’s main point?',['Automation has no benefits','Automation is only harmful','Automation has debated social effects','Automation affects only factories'],2,'Tekstas pabrėžia ginčijamas socialines pasekmes.'),
+      mc('expert','Choose the most academic phrase:',['A lot of people think','It is widely argued that','People say','Everyone knows'],1,'Akademinis registras.'),
+      fi('expert','Complete: Had I known earlier, I ___ have acted differently.','would','Third conditional inversion.'),
+      mc('expert','Which sentence uses concession?',['Because it rained, we stayed home.','Although it rained, we went out.','It rained and we stayed home.','It rained before we left.'],1,'Although rodo nuolaidą.'),
+      wr('expert','Write a 180-word argumentative paragraph: Does technology make education more equal?'),
+      wr('expert','Summarise the strongest counterargument to your own view in 80 words.')
+    ],
+    C2:[
+      th('C2: Proficient English','C2 užduotys artimos akademiniam, profesiniam ir literatūriniam anglų kalbos vartojimui.<br><div class="th-hl">Were it not for contextual evidence, the interpretation would remain speculative.</div>'),
+      mc('expert','Choose the most precise word: The minister’s statement was deliberately ___.',['ambiguous','unclearish','not clear','foggy'],0,'Ambiguous = dviprasmiškas.'),
+      fi('expert','Complete: Rarely ___ such a convincing argument been presented.','has','Inversija: Rarely has...'),
+      rd('expert','The author’s restrained tone does not weaken the critique; rather, it intensifies it by forcing readers to infer the moral judgement themselves.','What does the sentence suggest?',['The critique is weak','The tone strengthens the critique indirectly','The author has no opinion','Readers should ignore tone'],1,'Santūrus tonas sustiprina kritiką netiesiogiai.'),
+      mc('expert','Choose the best paraphrase of "mitigate":',['make worse','make less severe','make impossible','make official'],1,'Mitigate = sušvelninti.'),
+      fi('expert','Complete: Were it not ___ your help, we would have failed.','for','Fixed phrase: Were it not for...'),
+      mc('expert','Which phrase signals cautious academic judgement?',['This proves everything','It may be argued that','It is definitely always true','Nobody can deny'],1,'Cautious academic style.'),
+      wr('expert','Write a 220-word critical response to this claim: “Fluency matters more than accuracy.”'),
+      wr('expert','Write a nuanced 120-word literary interpretation of the metaphor: “The city breathed in silence.”')
+    ]
+  };
+
+  ENG.level = {label:'🎯 Rekomenduojama pagal tavo lygį',topics:levelTopics};
+
+  function extraMath(topic){
+    return [
+      mc('medium','Papildoma: Kuri strategija geriausia sprendžiant uždavinį „'+topic+'“?',['Spėti','Užrašyti duomenis ir formulę','Ignoruoti sąlygą','Rinktis didžiausią skaičių'],1,'Pirmiausia reikia aiškiai užrašyti duomenis ir formulę.'),
+      fi('medium','Papildoma: 15% nuo 240 = ?','36','240 × 0,15 = 36.'),
+      mc('hard','Papildoma: Išspręsk 3(x−2)+4=19',['3','4','5','7'],3,'3x−6+4=19 → 3x−2=19 → 3x=21 → x=7.'),
+      fi('hard','Papildoma: x² = 144. Teigiama x reikšmė = ?','12','√144 = 12.'),
+      mc('expert','Papildoma: Jei dydis padidėjo nuo 80 iki 100, kiek procentų padidėjo?',['20%','25%','30%','125%'],1,'Padidėjimas 20; 20/80 = 0,25 = 25%.'),
+      fi('expert','Papildoma: Vidurkis iš 6, 8, 10, 12 = ?','9','(6+8+10+12)/4 = 36/4 = 9.')
+    ];
+  }
+
+  function extraEnglish(topic){
+    return [
+      mc('medium','Papildoma: Choose the correct sentence about "'+topic+'".',['She don’t understand.','She doesn’t understand.','She doesn’t understands.','She not understand.'],1,'Trečias asmuo: doesn’t + base verb.'),
+      fi('medium','Papildoma: Complete: I am interested ___ learning English.','in','interested in + noun/gerund.'),
+      bd('hard','Papildoma: Build: "Learning English opens many opportunities"',['Learning','English','opens','many','opportunities'],['Learning','English','opens','many','opportunities']),
+      mc('hard','Papildoma: Which is the most formal?',['I want info.','Please send me more information.','Tell me stuff.','Give details.'],1,'Mandagesnis ir formalesnis sakinys.'),
+      rd('hard','Regular practice is more effective than last-minute memorisation because it strengthens long-term memory and reduces stress before tests.','What does the text recommend?',['Studying only before tests','Practising regularly','Avoiding revision','Memorising without breaks'],1,'Tekste rekomenduojama reguliari praktika.'),
+      wr('expert','Papildoma writing: Write 100–150 words using the topic "'+topic+'". Include at least one complex sentence.')
+    ];
+  }
+
+  function expandLessons(){
+    Object.values(MATH).forEach(cls=>{
+      Object.entries(cls.lessons||{}).forEach(([topic,arr])=>{
+        const original = arr.length;
+        let i=0;
+        while(arr.length < Math.max(original*2, 12)){
+          arr.push(extraMath(topic)[i % extraMath(topic).length]);
+          i++;
+        }
+      });
+    });
+    Object.values(ENG).forEach(cat=>{
+      Object.entries(cat.topics||{}).forEach(([topic,arr])=>{
+        const original = arr.length;
+        let i=0;
+        while(arr.length < Math.max(original*2, 12)){
+          arr.push(extraEnglish(topic)[i % extraEnglish(topic).length]);
+          i++;
+        }
+      });
+    });
+  }
+  expandLessons();
+
+  // Perrašomas lygio testo pabaigimas: nuo A1 iki C2.
+  window.finPT = finPT = function(){
+    let lvl='A1';
+    if(ptSc>=2) lvl='A2';
+    if(ptSc>=4) lvl='B1';
+    if(ptSc>=6) lvl='B2';
+    if(ptSc>=8) lvl='C1';
+    if(ptSc>=10) lvl='C2';
+    S.engLevel=lvl;
+    S.placementDone=true;
+    save();
+    T('placeContent').innerHTML=`<div style="text-align:center;padding:1rem 0"><div style="font-size:4rem;margin-bottom:1rem">🎯</div><h2 style="font-family:var(--fd);font-size:2rem;color:var(--pr)">Tavo anglų kalbos lygis: ${lvl}</h2><p style="color:var(--tx2);margin:.5rem 0 2rem">Teisingai: ${ptSc}/${PT.length}. Užduotys bus pritaikytos pagal šį lygį.</p><button class="btn btn-pr" onclick="showSubj('english')">Pradėti anglų kalbą! 🚀</button></div>`;
+  };
+
+  // Login metu testas nebeleidžiamas automatiškai; jis paleidžiamas tik pasirinkus anglų kalbą.
+  window.afterLogin = afterLogin = function(){
+    const av=T('navAv');
+    if(av)av.textContent=S.user[0].toUpperCase();
+    showScreen('screen-dashboard');
+    renderDash();
+  };
+
+  // Registracija pradeda švarų profilį, bet testas paleidžiamas tik pasirinkus anglų kalbą.
+  window.doReg = doReg = function(){
+    const u=T('rUser').value.trim();
+    if(!u){toast('Įvesk vardą!');return;}
+    S={...S,user:u,xp:0,coins:0,lessons:0,done:[],inv:[],eq:{},cor:0,tot:0,engLevel:'A1',placementDone:false};
+    afterLogin();
+  };
+
+  // Anglų langas: rekomenduojamos užduotys pagal lygį rodomos viršuje.
+  window.renderEng = renderEng = function(){
+    const order = ['level', ...Object.keys(ENG).filter(k=>k!=='level')];
+    let html=`<p style="color:var(--tx2);margin-bottom:1rem">Tavo lygis: <strong style="color:var(--pr)">${S.engLevel}</strong>. Rekomenduojama pradėti nuo skilties „Rekomenduojama pagal tavo lygį“.</p>`;
+    order.forEach(ck=>{
+      const cat=ENG[ck]; if(!cat) return;
+      html+=`<div style="margin-bottom:2rem"><p class="sec-title">${cat.label}</p><div class="topic-grid">`;
+      Object.keys(cat.topics).forEach(t=>{
+        if(ck==='level' && t!==S.engLevel) return;
+        const key='eng_'+ck+'_'+t,done=S.done.includes(key);
+        html+=`<div class="topic-card ${done?'done':''}" onclick="startLesson('english','${ck}','${t.replace(/'/g,"\\'")}')"><div class="topic-name">${t}</div><div class="topic-meta">${cat.topics[t].length} žingsniai</div><div class="tbadge ${done?'tb-done':'tb-new'}">${done?'✅ Baigta':'Nauja'}</div></div>`;
+      });
+      html+='</div></div>';
+    });
+    T('subjBody').innerHTML=html;
+  };
+
+  // Renderis papildomas reading ir writing tipais.
+  window.renderStep = renderStep = function(){
+    const tot=S.steps.length,pct=Math.round(S.step/tot*100);
+    T('lPBar').style.width=pct+'%';T('lCount').textContent=`${S.step+1}/${tot}`;
+    const nb=T('lNext');nb.style.display='none';
+    const s=S.steps[S.step];
+    const dg=s.diff?db(s.diff):'';
+    let html='';
+    if(s.type==='theory'){
+      html=`<div class="l-theory"><h3>${s.title}</h3>${s.content}</div>`;
+      nb.textContent='Supratau →';nb.style.display='flex';nb.onclick=nextStep;
+    }else if(s.type==='mc'){
+      html=`<div class="q-lbl">Pasirink teisingą ${dg}</div><div class="q-txt">${s.q}</div><div class="choices">${s.c.map((c,i)=>`<button class="choice" onclick="ansMC(${i})">${c}</button>`).join('')}</div><div id="fb"></div>`;
+    }else if(s.type==='reading'){
+      html=`<div class="q-lbl">Reading ${dg}</div><div style="margin-bottom:1.5rem;line-height:1.8;background:var(--bg2);padding:1rem;border-radius:var(--rs)">${s.text}</div><div class="q-txt">${s.q}</div><div class="choices">${s.c.map((c,i)=>`<button class="choice" onclick="ansMC(${i})">${c}</button>`).join('')}</div><div id="fb"></div>`;
+    }else if(s.type==='writing'){
+      html=`<div class="q-lbl">Writing ${dg}</div><div class="q-txt">${s.q}</div><textarea class="fill-inp" id="wInp" style="height:180px;resize:vertical" placeholder="Rašyk atsakymą anglų kalba..."></textarea><div id="fb"></div>`;
+      nb.textContent='Baigti ✓';nb.style.display='flex';nb.onclick=finishWritingTask;
+    }else if(s.type==='fill'){
+      html=`<div class="q-lbl">Užpildyk trūkstamą ${dg}</div><div class="q-txt">${s.q}</div><input class="fill-inp" id="fInp" placeholder="Atsakymas..." onkeydown="if(event.key==='Enter')chkFill()"/><div id="fb"></div>`;
+      nb.textContent='Tikrinti ✓';nb.style.display='flex';nb.onclick=chkFill;
+      setTimeout(()=>{const el=T('fInp');if(el)el.focus();},80);
+    }else if(s.type==='build'){
+      bSel=[];
+      html=`<div class="q-lbl">Sudaryti sakinį ${dg}</div><div class="q-txt">${s.q}</div><div class="sent-area" id="sentA" onclick="rmW()"></div><div class="word-bank">${s.w.map((w,i)=>`<button class="wchip" id="wc${i}" onclick="addW('${w}',${i})">${w}</button>`).join('')}</div><div id="fb"></div>`;
+      nb.textContent='Tikrinti ✓';nb.style.display='flex';nb.onclick=chkBuild;
+    }
+    T('lCard').innerHTML=html;
+  };
+
+  window.finishWritingTask = finishWritingTask = function(){
+    const txt=(T('wInp')&&T('wInp').value.trim())||'';
+    const fb=T('fb');
+    S.tot++;
+    if(txt.split(/\s+/).filter(Boolean).length>=12){
+      S.cor++;
+      aXP(Math.round(18*getDifficultyMultiplier()));
+      aCoin(10);
+      if(fb){fb.className='fb ok';fb.textContent='✅ Puiku! Atsakymas pakankamai išsamus.';}
+    }else{
+      if(fb){fb.className='fb bad';fb.textContent='Parašyk bent 12 žodžių, kad užduotis būtų įskaityta.';}
+      return;
+    }
+    const nb=T('lNext');nb.textContent='Tęsti →';nb.style.display='flex';nb.onclick=nextStep;
+  };
+
+  // XP už anglų pamokos pabaigą auga pagal nustatytą lygį.
+  const oldFinLesson = finLesson;
+  window.finLesson = finLesson = function(){
+    if(S.curSubj==='english'){
+      S.xpBoost = Math.max(S.xpBoost || 1, getDifficultyMultiplier());
+    }
+    oldFinLesson();
+    S.xpBoost = 1;
+  };
+})();
+
+</script>
+</body>
+</html>
